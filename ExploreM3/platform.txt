@@ -107,6 +107,6 @@ tools.exploreM3_upload.path.linux={runtime.hardware.path}/tools/linux
 
 tools.exploreM3_upload.upload.params.verbose=-D
 tools.exploreM3_upload.upload.params.quiet=-q -q
-tools.exploreM3_upload.upload.pattern="{path}/{cmd}" -D "{build.path}/{build.project_name}.bin"
+tools.exploreM3_upload.upload.pattern="{path}/{cmd}" -d,0x1209,0xEE03 -D "{build.path}/{build.project_name}.bin"
 
 

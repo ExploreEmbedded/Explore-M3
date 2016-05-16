@@ -1,9 +1,5 @@
 
 Explore_LPC1768.name=ExploreM3_Lpc1768
-Explore_LPC1768.vid.0=0x2341
-Explore_LPC1768.pid.0=0x003d
-Explore_LPC1768.vid.1=0x2A03
-Explore_LPC1768.pid.1=0x003d
 #Explore_LPC1768.upload.tool=FlashMagic
 #Explore_LPC1768.upload.protocol=Serial
 Explore_LPC1768.upload.tool=exploreM3_upload
@@ -20,5 +16,5 @@ Explore_LPC1768.build.core=ExploreM3
 Explore_LPC1768.build.extra_flags=-D__SAM3X8E__ -mthumb {build.usb_flags}
 Explore_LPC1768.build.ldscript=linker_scripts/gcc/LPC17xx.ld
 Explore_LPC1768.build.variant=ExploreM3
-Explore_LPC1768.build.vid=0x2341
-Explore_LPC1768.build.pid=0x003e
+Explore_LPC1768.build.vid=0x1209
+Explore_LPC1768.build.pid=0xEE03
