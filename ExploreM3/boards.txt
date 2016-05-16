@@ -1,5 +1,5 @@
 
-Explore_LPC1768.name=ExploreM3_Lpc1768
+Explore_LPC1768.name=Explore M3
 Explore_LPC1768.vid.0=0x2341
 Explore_LPC1768.pid.0=0x003d
 Explore_LPC1768.vid.1=0x2A03
