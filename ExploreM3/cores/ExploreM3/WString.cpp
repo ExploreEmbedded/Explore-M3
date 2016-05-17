@@ -21,7 +21,7 @@
 
 #include "WString.h"
 #include "itoa.h"
-#include "dtostrf.h"
+#include "avr/dtostrf.h"
 
 /*********************************************/
 /*  Constructors                             */
@@ -45,7 +45,7 @@ String::String(const __FlashStringHelper *pstr)
 	*this = pstr;
 }
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
 String::String(String &&rval)
 {
 	init();
@@ -191,7 +191,7 @@ String & String::copy(const __FlashStringHelper *pstr, unsigned int length)
 	return *this;
 }
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
 void String::move(String &rhs)
 {
 	if (buffer) {
@@ -223,7 +223,7 @@ String & String::operator = (const String &rhs)
 	return *this;
 }
 
-#if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
 String & String::operator = (String &&rval)
 {
 	if (this != &rval) move(rval);
