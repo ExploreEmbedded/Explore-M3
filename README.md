@@ -1,4 +1,10 @@
 # Explore-M3
+
+Copyright (c) 2016 ExploreEmbedded.com
+All Rights Reserved.
+
+For more details read the copyright notice. 
+
 Explore M3 Arduino Support.
 To install Arduino IDE Support for Explore M3, check the tutorial below:
 http://exploreembedded.com/wiki/Arduino_Setup_for_Explore_M3
