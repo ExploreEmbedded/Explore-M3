@@ -100,7 +100,7 @@ recipe.size.regex=\.text\s+([0-9]+).*
 # Upload using USB bootloader over DFU
 tools.exploreM3_upload.cmd=dfu-util
 tools.exploreM3_upload.cmd.windows=dfu-util
-tools.exploreM3_upload.cmd.linux=dfu-util                
+tools.exploreM3_upload.cmd.linux=dfu                
 tools.exploreM3_upload.path={runtime.hardware.path}/tools/win
 tools.exploreM3_upload.path.macosx={runtime.hardware.path}/tools/macosx
 tools.exploreM3_upload.path.linux={runtime.hardware.path}/tools/linux    

@@ -45,7 +45,7 @@
 #include "wiring_digital.h"
 #include "wiring_analog.h"
 #include "wirish_time.h"
-#include "wCharacter.h"
+#include "WCharacter.h"
 
 
 
