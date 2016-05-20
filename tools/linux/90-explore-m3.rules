@@ -1,0 +1,4 @@
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="ee03", MODE="0666" 
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1209", ATTRS{idProduct}=="ee03", SYMLINK+="Explore M3%n"
+
+
