@@ -45,7 +45,7 @@
 #include "wiring_digital.h"
 #include "wiring_analog.h"
 #include "wirish_time.h"
-#include "WCharacter.h"
+//#include "WCharacter.h"
 
 
 
@@ -62,8 +62,11 @@ extern "C"{
 #ifdef __cplusplus
 } // extern "C"
 
-#include "HardwareTimer.h"
-#include "HardwareSerial.h"
+#include "WCharacter.h"
+#include "WString.h"
+//#include "Tone.h"
+//#include "WMath.h"
+//#include "HardwareSerial.h"
 
 #include "usb_serial.h"
 #include "wirish_math.h"
