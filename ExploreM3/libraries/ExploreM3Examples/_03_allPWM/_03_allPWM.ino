@@ -27,6 +27,7 @@ void loop() {
   analogWrite(led2, brightness);
   analogWrite(led3, brightness);
   analogWrite(led4, brightness);
+  analogWrite(led5, brightness);
 
   // change the brightness for next time through the loop:
   brightness = brightness + fadeAmount;
