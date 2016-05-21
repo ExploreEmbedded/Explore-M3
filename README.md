@@ -18,6 +18,7 @@ http://exploreembedded.com/wiki/Explore_M3_Arduino_Libraries
 Pick the one you've used before or want to use in your project. Also will make a page on github wiki to track who is working on what.
 Once you choose something please update the github wiki.
 
+https://github.com/SaheblalBagwan/Explore-M3/wiki/Arduino-Libraries-for-Explore-M3
 
 **************************************************************************************************************************************
 
