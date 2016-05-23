@@ -117,7 +117,7 @@ uint16_t ADC_GetAdcValue(uint8_t v_adcChannel_u8)
         
         /* Select channel is with range, COnfigure the channel for ADC and DO the A/D conversion */ 
         GPIO_PinFunction(AdcConfig[v_adcChannel_u8].pinNumber,AdcConfig[v_adcChannel_u8].PinFunSel);
-        LPC_ADC->ADCR  = (LPC_ADC->ADCR  & 0xFFFFFF00) | (0x01 << 0 );     /* set the channel */
+        LPC_ADC->ADCR  = (LPC_ADC->ADCR  & 0xFFFFFF00) | (0x01 << v_adcChannel_u8 );     /* set the channel */
 
         delay_us(10);        /* allow the channel voltage to stabilize*/
         
@@ -168,7 +168,7 @@ uint16_t ADC_GetAdcValue(uint8_t v_adcChannel_u8)
         
         /* Select channel is with range, COnfigure the channel for ADC and DO the A/D conversion */ 
         GPIO_PinFunction(AdcConfig[v_adcChannel_u8].pinNumber,AdcConfig[v_adcChannel_u8].PinFunSel);
-        LPC_ADC->ADCR  = (LPC_ADC->ADCR  & 0xFFFFFF00) | (0x01 << 0 );     /* set the channel */
+        LPC_ADC->ADCR  = (LPC_ADC->ADCR  & 0xFFFFFF00) | (0x01 << v_adcChannel_u8 );     /* set the channel */
 
         delay_us(10);        /* allow the channel voltage to stabilize*/
    
