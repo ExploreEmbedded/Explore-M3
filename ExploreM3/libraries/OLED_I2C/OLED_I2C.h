@@ -24,7 +24,7 @@
 #define OLED_I2C_h
 //#include "stdutils.h"
 
-#define SSD1306_ADDR		0x3C
+#define SSD1306_ADDR		0x3D
 
 #define LEFT	0
 #define RIGHT	9999
