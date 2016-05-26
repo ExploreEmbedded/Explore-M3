@@ -47,7 +47,7 @@ extern "C" {
 
 extern const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS];
 
-#define   A0         32
+#define   AA0         32
 #define   A1         33
 #define   A2         34
 #define   A3         35
@@ -63,7 +63,7 @@ extern const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS];
 #define   PWM_5      25
 #define   PWM_6      24
 
-#define ANALOG_ZERO  A0
+#define ANALOG_ZERO  AA0
 #define ANALOG_MAX   A5
 
 /* typedef struct

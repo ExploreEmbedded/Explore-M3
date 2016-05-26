@@ -258,6 +258,10 @@ typedef enum
 
 #define  util_AreAllBitsSet(x,BitMask) (((x)&(BitMask))==BitMask)
 #define  util_AreAnyBitsSet(x,BitMask) (((x)&(BitMask))!=0x00u)
+
+#ifndef _BV
+#define _BV(n) (1<<(n))
+#endif
 /**************************************************************************************************/
 
 

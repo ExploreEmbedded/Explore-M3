@@ -33,6 +33,7 @@
 #define _WIRISH_WIRISH_MATH_H_
 
 #include <math.h>
+#include "stdutils.h"
 
 /**
  * @brief Initialize the pseudo-random number generator.
@@ -78,6 +79,10 @@ long random(long min, long max);
  * @param toEnd the end of the value's mapped range.
  * @return the mapped value.
  */
+ 
+ uint32_t random(void);
+ 
+ 
 static inline long map(long value, long fromStart, long fromEnd,
                 long toStart, long toEnd) {
     return (value - fromStart) * (toEnd - toStart) / (fromEnd - fromStart) +
