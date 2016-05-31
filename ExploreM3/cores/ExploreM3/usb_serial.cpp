@@ -1,8 +1,7 @@
 /******************************************************************************
  * The MIT License
  *
- * Copyright (c) 2010 Perry Hung.
- * Copyright (c) 2011, 2012 LeafLabs, LLC.
+ * Copyright (c) 2015 ExploreEmbedded.com
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -58,6 +57,8 @@ USBSerial::USBSerial(void)
 
 void USBSerial::begin(uint32_t baud) 
 {
+    /* ExploreEmbedded:
+     * USB_Initialization done in constructor itself, so USB_Serial class is always enabled.*/
 /*
   USB_Init();                               // USB Initialization
   USB_Connect(TRUE);                        // USB Connect
@@ -77,18 +78,15 @@ uint32_t temp = (uint32_t)ch;
     USB_WriteEP (CDC_DEP_IN, (unsigned char *)&temp, 1);
 }
 
-/*
- * I/O
- */
+
 
 int USBSerial::read(void) {
     
     char ch;
     int numBytesToRead = 1;
-    // Block until a byte becomes available, to save user confusion.
-    while (!this->available());
+
+    while (!this->available()); //Wait till the ringbufffer is empty
     CDC_RdOutBuf (&ch, &numBytesToRead);
-		//  USB_WriteEP (CDC_DEP_IN, (unsigned char *)&serBuf[0], numBytesRead);
         
     return ch;
 }
@@ -99,40 +97,36 @@ int USBSerial::available(void) {
 
   CDC_OutBufAvailChar (&numAvailByte);
         
-    return numAvailByte;//usart_data_available(this->usart_device);
+    return numAvailByte;
 }
 
-/* Roger Clark. Added function missing from LibMaple code */
+
 
 int USBSerial::peek(void)
 {
-    return 0;//usart_peek(this->usart_device);
+    return 0;
 }
 
 int USBSerial::availableForWrite(void)
 {
-/* Roger Clark. 
- * Currently there isn't an output ring buffer, chars are sent straight to the hardware. 
+/* ExploreEmbedded. 
+ * Currently ring buffer is not implemented for Tx, chars are sent straight to the hardware. 
  * so just return 1, meaning that 1 char can be written
- * This will be slower than a ring buffer implementation, but it should at least work !
  */
   return 1;
 }
 
-void delay(volatile int count)
-{
-    volatile int i,j;
-    for(i=0;i<count;i++)
-        for(j=0;j<100;j++);
-}
 
+extern volatile int TxDoneFlag; //Flag to indicate the USB frame is transmitted.
 size_t USBSerial::write(unsigned char ch) {
 
     USB_WriteEP (CDC_DEP_IN, (unsigned char *)&ch, 1);
-    delay(22);
+
+  while(TxDoneFlag==0); //This falg will be set by USB EndPoint2 Tx call back function.
+      TxDoneFlag = 0;
 	return 1;
 }
 
 void USBSerial::flush(void) {
- //   usart_reset_rx(this->usart_device);
+ 
 }

@@ -24,7 +24,7 @@
 #include "usbcore.h"
 #include "cdc.h"
 #include "cdcuser.h"
-//#include "serial.h"
+
 
 
 unsigned char BulkBufIn  [USB_CDC_BUFSIZE];            // Buffer to store USB IN  packet
@@ -51,6 +51,7 @@ unsigned short  CDC_DepInEmpty  = 1;                   // Data IN EP is empty
 #define CDC_BUF_EMPTY(cdcBuf)      (cdcBuf.rdIdx == cdcBuf.wrIdx)
 #define CDC_BUF_FULL(cdcBuf)       (cdcBuf.rdIdx == cdcBuf.wrIdx+1)
 #define CDC_BUF_COUNT(cdcBuf)      (CDC_BUF_MASK & (cdcBuf.wrIdx - cdcBuf.rdIdx))
+
 
 
 // CDC output buffer
@@ -93,8 +94,6 @@ int CDC_WrOutBuf (const char *buffer, int *length) {
   bytesWritten = bytesToWrite;
 
 
-  // ... add code to check for overwrite
-
   while (bytesToWrite) {
       CDC_BUF_WR(CDC_OutBuf, *buffer++);           // Copy Data to buffer
       bytesToWrite--;
@@ -122,24 +121,7 @@ int CDC_OutBufAvailChar (int *availChar) {
   Return Value: None
  *---------------------------------------------------------------------------*/
 void CDC_Init (char portNum ) {
-/*
-  if ( portNum == 0 )
-  {
-	ser_OpenPort (0);
-	ser_InitPort0 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-  }
-  else
-  {
-	ser_OpenPort (1);
-	ser_InitPort1 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-  }
-  */
+
   CDC_DepInEmpty  = 1;
   CDC_SerialState = CDC_GetSerialState();
 
@@ -226,23 +208,7 @@ uint32_t CDC_SetLineCoding (void) {
   CDC_LineCoding.bCharFormat =  EP0Buf[4];
   CDC_LineCoding.bParityType =  EP0Buf[5];
   CDC_LineCoding.bDataBits   =  EP0Buf[6];
-/*
-#if PORT_NUM
-  ser_ClosePort(1);
-  ser_OpenPort (1);
-  ser_InitPort1 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-#else
-  ser_ClosePort(0);
-  ser_OpenPort (0);
-  ser_InitPort0 (CDC_LineCoding.dwDTERate,
-                CDC_LineCoding.bDataBits,
-                CDC_LineCoding.bParityType,
-                CDC_LineCoding.bCharFormat);
-#endif
-*/
+
   return (TRUE);
 }
 
@@ -300,22 +266,10 @@ uint32_t CDC_SendBreak (unsigned short wDurationOfBreak) {
   Parameters:   none
   Return Value: none
  *---------------------------------------------------------------------------*/
+ volatile int TxDoneFlag = 0;
 void CDC_BulkIn(void) {
-  int numBytesRead, numBytesAvail;
 
-//  ser_AvailChar (&numBytesAvail);
-
-  // ... add code to check for overwrite
-
- // numBytesRead = ser_Read ((char *)&BulkBufIn[0], &numBytesAvail);
-
-  // send over USB
-  if (numBytesRead > 0) {
-	USB_WriteEP (CDC_DEP_IN, &BulkBufIn[0], numBytesRead);
-  }
-  else {
-    CDC_DepInEmpty = 1;
-  }
+TxDoneFlag = 1;
 }
 
 
@@ -330,10 +284,8 @@ void CDC_BulkOut(void) {
   // get data from USB into intermediate buffer
   numBytesRead = USB_ReadEP(CDC_DEP_OUT, &BulkBufOut[0]);
 
-  // ... add code to check for overwrite
-
   // store data in a buffer to transmit it over serial interface
- // CDC_WrOutBuf ((char *)&BulkBufOut[0], &numBytesRead);
+   CDC_WrOutBuf ((char *)&BulkBufOut[0], &numBytesRead);
 
 }
 

@@ -41,30 +41,73 @@ extern "C" {
 #define _BOARD_EXPLORE_M3_H_
 
 #include "stdutils.h"
+#include "gpio.h"
 
 #define BOARD_MAX_GPIO_PINS  41
 #define C_MaxAdcChannels_U8  8u
 
 extern const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS];
 
-#define   AA0         32
-#define   A1         33
-#define   A2         34
-#define   A3         35
-#define   A4         36
-#define   A5         37
+/************************************
+             ADC pins
+************************************/             
+static unsigned const int A0 = 32;
+static unsigned const int A1 = 33;
+static unsigned const int A2 = 34;
+static unsigned const int A3 = 35;
+static unsigned const int A4 = 36;
+static unsigned const int A5 = 37;
+
+#define ANALOG_ZERO  A0
+#define ANALOG_MAX   A5
+/**********End of ADC pins********/
+
+
+
+
+/************************************
+             RGB pins
+************************************/             
 #define   RGB_RED    38
 #define   RGB_BLUE   39
 #define   RGB_GREEN  40
+/**********End of RGB pins**********/
+
+
+
+
+
+/************************************
+             RGB pins
+************************************/             
 #define   PWM_1      29
 #define   PWM_2      28
 #define   PWM_3      27
 #define   PWM_4      26
 #define   PWM_5      25
 #define   PWM_6      24
+/**********End of PWM pins**********/
 
-#define ANALOG_ZERO  AA0
-#define ANALOG_MAX   A5
+
+/************************************
+             SPI Pins
+************************************/        
+#define   SPI0_MOSI  9 
+#define   SPI0_MISO  8
+#define   SPI0_SCK   7
+#define   SPI0_SS    6 
+
+#define   SPI1_MOSI  10 
+#define   SPI1_MISO  11
+#define   SPI1_SCK   12
+#define   SPI1_SS    13
+
+//By default  the SPI1 is mapped to Arduino SPI library
+#define   MOSI       SPI1_MOSI  
+#define   MISO       SPI1_MISO
+#define   SCK        SPI1_SCK
+#define   SS         SPI1_SS
+/**********End of SPI pins***********/
 
 /* typedef struct
 { 

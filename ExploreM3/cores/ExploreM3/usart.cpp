@@ -303,6 +303,6 @@ void usart_putudec(usart_dev *dev, uint32_t val) {
 
 
 HardwareSerial Serial0(USART0); 
-HardwareSerial Serial1(USART1); 
+HardwareSerial Serial1(USART1);  
 HardwareSerial Serial2(USART2); 
 HardwareSerial Serial3(USART3); 
