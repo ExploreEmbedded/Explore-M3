@@ -1,8 +1,8 @@
 const int analogPin = A0;    // the pin that the potentiometer is attached to
-const int ledCount = 10;    // the number of LEDs in the bar graph
+const int ledCount = 8;    // the number of LEDs in the bar graph
 
 int ledPins[] = {
-  10,9,8,7,6,5,4,3,2,1 // Here we have the number of LEDs to use in the BarGraph
+  8,7,6,5,4,3,2,1 // Here we have the number of LEDs to use in the BarGraph
   };  
 
 

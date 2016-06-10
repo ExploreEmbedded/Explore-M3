@@ -161,6 +161,55 @@ void ST7565::drawstring(uint8_t x, uint8_t line, char *c) {
   }
 }
 
+void ST7565::drawNumber(uint8_t x, uint8_t line, int num) {
+char buf[20];
+sprintf(buf,%d);
+drawstring(x,line,buf);
+}
+
+
+void ST7565::drawNumFloat(uint8_t x, uint8_t line, float num) {
+	char st[50]="0.17";
+    char buffer[10];
+	boolean neg=false;
+    uint32_t int_part,decimal_part;
+    int i=0,len;
+    double rounding = 0.5;
+
+	if (num<0)
+    {
+		neg = true;
+        num =-num;
+    }  
+    
+      
+  for (i=0; i<dec; ++i)
+    rounding /= 10.0;
+
+   num +=rounding; 
+    int_part = (uint32_t)num;
+
+    decimal_part = (num - int_part)*pow(10,dec);;
+    sprintf(st,"%D",int_part);
+    sprintf(buffer,"%D",decimal_part);
+    len= strlen(st);
+    st[len++] = '.';
+    
+    for(i=0;buffer[i];i++)
+    {
+        st[len++] = buffer[i];
+    }
+    
+    while(i<dec)
+    {
+        i++;
+        st[len++] = 0x30;
+    }
+
+    st[len]=0; 
+	drawstring(x,y,st);
+}
+
 
 void ST7565::drawstring_P(uint8_t x, uint8_t line, const char *str) {
   while (1) {

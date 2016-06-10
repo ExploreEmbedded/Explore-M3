@@ -105,6 +105,8 @@ class ST7565 {
   void drawchar(uint8_t x, uint8_t line, char c);
   void drawstring(uint8_t x, uint8_t line, char *c);
   void drawstring_P(uint8_t x, uint8_t line, const char *c);
+  void drawNumber(uint8_t x, uint8_t line, int num);
+  void drawNumFloat(uint8_t x, uint8_t line, float num);
 
   void drawbitmap(uint8_t x, uint8_t y, 
 		  const uint8_t *bitmap, uint8_t w, uint8_t h,

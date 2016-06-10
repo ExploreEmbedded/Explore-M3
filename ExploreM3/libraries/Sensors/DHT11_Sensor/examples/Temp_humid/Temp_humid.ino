@@ -3,6 +3,7 @@
 // PURPOSE: DHT11 library test sketch for Arduino
 //
 #include <dht11.h>
+#include "ST7565.h"
 //Celsius to Fahrenheit conversion
 double Fahrenheit(double celsius)
 {
@@ -57,7 +58,7 @@ double dewPointFast(double celsius, double humidity)
 }
 
 
-
+ST7565 glcd(29, 28, 27, 26, 25);
 
 dht11 DHT11;
 
@@ -70,6 +71,13 @@ void setup()
   Serial.print("LIBRARY VERSION: ");
   Serial.println(DHT11LIB_VERSION);
   Serial.println();
+
+  glcd.begin(0x18);   
+  
+  // draw a string at location (0,0)
+ // glcd.drawstring(0, 0, "      Welcome to        Explore Embedded");  
+ // glcd.display();  
+
 }
 
 void loop()
@@ -78,11 +86,15 @@ void loop()
 
   int chk = DHT11.read(DHT11PIN);
 
-  Serial.print("Read sensor: ");
+  glcd.drawstring(0, 0, " Read sensor: " );
+  glcd.display();
+  //Serial.print("Read sensor: ");
   switch (chk)
   {
     case DHTLIB_OK: 
-    Serial.println("OK"); 
+    glcd.drawstring(70, 0, " OK" );
+    glcd.display();
+    //Serial.println("OK"); 
     break;
     case DHTLIB_ERROR_CHECKSUM: 
     Serial.println("Checksum error"); 
@@ -95,24 +107,19 @@ void loop()
     break;
   }
 
-  Serial.print("Humidity (%): ");
-  Serial.println((float)DHT11.humidity, 2);
+  //Serial.print("Humidity (%): ");
+  glcd.drawstring(0, 2, " Humidity (%): " );
+  glcd.drawNumFloat(90,2,DHT11.humidity,2);
+  glcd.display();
+  // Serial.println((float)DHT11.humidity, 2);
 
-  Serial.print("Temperature (°C): ");
-  Serial.println((float)DHT11.temperature, 2);
-
-  Serial.print("Temperature (°F): ");
-  Serial.println(Fahrenheit(DHT11.temperature), 2);
-
-  Serial.print("Temperature (°K): ");
-  Serial.println(Kelvin(DHT11.temperature), 2);
-
-  Serial.print("Dew Point (°C): ");
-  Serial.println(dewPoint(DHT11.temperature, DHT11.humidity));
-
-  Serial.print("Dew PointFast (°C): ");
-  Serial.println(dewPointFast(DHT11.temperature, DHT11.humidity));
-
+  //Serial.print("Temp (°C): ");
+  glcd.drawstring(0, 4, " Temp (C)    : " );
+  glcd.drawNumFloat(90,4,DHT11.temperature,2);
+  glcd.display();
+  //Serial.println((float)DHT11.temperature, 2); 
+  
+  
   delay(2000);
 }
 //
