@@ -45,6 +45,7 @@
 #include "wiring_digital.h"
 #include "wiring_analog.h"
 #include "wirish_time.h"
+#include "binary.h"   //added to support B00001000 arduino notation instead of 0b00001000
 //#include "WCharacter.h"
 
 
