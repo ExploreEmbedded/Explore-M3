@@ -67,7 +67,7 @@ extern "C"{
 #include "WString.h"
 //#include "Tone.h"
 //#include "WMath.h"
-//#include "HardwareSerial.h"
+#include "HardwareSerial.h"
 #include "Stream.h"
 
 #include "usb_serial.h"
