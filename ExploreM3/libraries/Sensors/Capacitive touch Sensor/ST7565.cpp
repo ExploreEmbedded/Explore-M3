@@ -161,6 +161,12 @@ void ST7565::drawstring(uint8_t x, uint8_t line, char *c) {
   }
 }
 
+void ST7565::drawNumber(uint8_t x, uint8_t line, int num) {
+char buf[20];
+sprintf(buf,%d);
+drawstring(x,line,buf);
+}
+
 
 void ST7565::drawstring_P(uint8_t x, uint8_t line, const char *str) {
   while (1) {
