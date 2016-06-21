@@ -59,6 +59,8 @@ extern void init( void );
 #ifdef __cplusplus
 extern "C"{
 #endif // __cplusplus
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 
 #ifdef __cplusplus
 } // extern "C"
@@ -77,7 +79,10 @@ extern "C"{
 
 #endif // __cplusplus
 
-
+#ifdef __cplusplus
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
+unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout = 1000000L);
+#endif
 
 #endif /* __ARDUINO_H__ */
 
