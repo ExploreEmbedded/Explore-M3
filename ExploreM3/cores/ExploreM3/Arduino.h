@@ -82,3 +82,7 @@ extern "C"{
 #endif /* __ARDUINO_H__ */
 
 /*lint -restore */
+
+//this needs to be moved to a appropriate place, keeping it here for testing.
+
+typedef unsigned int word;
