@@ -199,19 +199,7 @@ void usart_enable(usart_dev *dev) {
  * @param dev Serial port to be disabled
  */
 void usart_disable(usart_dev *dev) {
- #if 0   /* FIXME this misbehaves (on F1) if you try to use PWM on TX afterwards */
-    usart_reg_map *regs = dev->regs;
 
-    /* TC bit must be high before disabling the USART */
-    while((regs->CR1 & USART_CR1_UE) && !(regs->SR & USART_SR_TC))
-        ;
-
-    /* Disable UE */
-    regs->CR1 &= ~USART_CR1_UE;
-
-    /* Clean up buffer */
-    usart_reset_rx(dev);
-    #endif
 }
 
 /**
@@ -256,12 +244,7 @@ char usart_getc(usart_dev *dev)
 uint32_t usart_rx(usart_dev *dev, uint8_t *buf, uint32_t len) {
     uint32_t rxed = 0;
   
- #if 0 
- while (usart_data_available(dev) && rxed < len) {
-        *buf++ = usart_getc(dev);
-        rxed++;
-    }
- #endif
+
  
   while (rxed < len) {
         *buf++ = usart_getc(dev);
@@ -303,6 +286,6 @@ void usart_putudec(usart_dev *dev, uint32_t val) {
 
 
 HardwareSerial Serial0(USART0); 
-HardwareSerial Serial1(USART1);  
+HardwareSerial Serial1(USART1); 
 HardwareSerial Serial2(USART2); 
 HardwareSerial Serial3(USART3); 

@@ -36,15 +36,6 @@
 
 
 
- 
-
-
-                               			
-
-//DEFINE_HWSERIAL(Serial, 0);							
-//DEFINE_HWSERIAL(Serial1, 1);
-//DEFINE_HWSERIAL(Serial2, 2);
-//DEFINE_HWSERIAL(Serial3, 3);
 
 
 
@@ -55,14 +46,11 @@ HardwareSerial::HardwareSerial(usart_dev *usart_device)
 
 
 
-/*
- * Set up/tear down
- */
+
 
 
 void HardwareSerial::begin(uint32_t baud) 
 {
-
      
         if (baud > this->usart_device->max_baud)
          {
@@ -70,21 +58,15 @@ void HardwareSerial::begin(uint32_t baud)
          }
 
    this->usart_device->baud_rate = baud; 
-    usart_init(this->usart_device);  
-      
+    usart_init(this->usart_device);        
 	
 }
-/*
- * Roger Clark.
- * Note. The config parameter is not currently used. This is a work in progress.  
- * Code needs to be written to set the config of the hardware serial control register in question.
- *
-*/
+
 
 
 
 void HardwareSerial::end(void) {
-   // usart_disable(this->usart_device);
+   
 }
 
 void HardwareSerial::Send(uint8_t ch) {
@@ -93,22 +75,17 @@ void HardwareSerial::Send(uint8_t ch) {
 	//return 1;
 }
 
-/*
- * I/O
- */
 
-int HardwareSerial::read(void) {
-    // Block until a byte becomes available, to save user confusion.
-    while (!this->available());
 
+int HardwareSerial::read(void) { 
     return usart_getc(this->usart_device);
 }
 
 int HardwareSerial::available(void) {
-    return 1;//usart_data_available(this->usart_device);
+    return 1; //Retruns 1 indicating data is available, While reding a char it waits till a char is received.
 }
 
-/* Roger Clark. Added function missing from LibMaple code */
+
 
 int HardwareSerial::peek(void)
 {
@@ -117,10 +94,9 @@ int HardwareSerial::peek(void)
 
 int HardwareSerial::availableForWrite(void)
 {
-/* Roger Clark. 
- * Currently there isn't an output ring buffer, chars are sent straight to the hardware. 
- * so just return 1, meaning that 1 char can be written
- * This will be slower than a ring buffer implementation, but it should at least work !
+/* Currently there isn't an output ring buffer, chars are sent straight to the hardware. 
+ * so just return 1, meaning that 1 char can be written.
+ * This will be slower than a ring buffer implementation.
  */
   return 1;
 }
@@ -132,5 +108,5 @@ size_t HardwareSerial::write(unsigned char ch) {
 }
 
 void HardwareSerial::flush(void) {
- //   usart_reset_rx(this->usart_device);
+  //As the ring buffer is not used nothing is there to flush, Just included for compilation.
 }

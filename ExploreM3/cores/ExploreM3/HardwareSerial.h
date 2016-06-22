@@ -38,87 +38,19 @@
 #include <inttypes.h>
 #include "Print.h"
 #include "usart.h"
+#include "Stream.h"
 
 
 
 
-//#include "boards.h"
-//#include "Stream.h"
-/*
- * IMPORTANT:
- *
- * This class documented "by hand" (i.e., not using Doxygen) in the
- * leaflabs-docs/ repository.
- *
- * If you alter the public HardwareSerial interface, you MUST update
- * the documentation accordingly.
- */
 
- 
- 
-// Define constants and variables for buffering incoming serial data.  We're
-// using a ring buffer (I think), in which head is the index of the location
-// to which to write the next incoming character and tail is the index of the
-// location from which to read.
-#if !(defined(SERIAL_TX_BUFFER_SIZE) && defined(SERIAL_RX_BUFFER_SIZE))
-#if (RAMEND < 1000)
-#define SERIAL_TX_BUFFER_SIZE 16
-#define SERIAL_RX_BUFFER_SIZE 16
-#else
-#define SERIAL_TX_BUFFER_SIZE 64
-#define SERIAL_RX_BUFFER_SIZE 64
-#endif
-#endif
-#if (SERIAL_TX_BUFFER_SIZE>256)
-typedef uint16_t tx_buffer_index_t;
-#else
-typedef uint8_t tx_buffer_index_t;
-#endif
-#if  (SERIAL_RX_BUFFER_SIZE>256)
-typedef uint16_t rx_buffer_index_t;
-#else
-typedef uint8_t rx_buffer_index_t;
-#endif
  
 struct usart_dev;
 
-/* Roger Clark
- *
- * Added config defines from AVR 
- * Note. The values will need to be changed to match STM32 USART config register values, these are just place holders.
- */
-// Define config for Serial.begin(baud, config);
-// Note. STM32 doesn't support as many different Serial modes as AVR or SAM cores.
-
-#define SERIAL_8N1	0B00000000
-#define SERIAL_8N2	0B00100000
-#define SERIAL_9N1	0B00001000
-#define SERIAL_9N2	0B00101000	
-
-#define SERIAL_8E1	0B00000010
-#define SERIAL_8E2	0B00100010
-#define SERIAL_9E1	0B00001010
-#define SERIAL_9E2	0B00101010
-
-#define SERIAL_8O1	0B00000011
-#define SERIAL_8O2	0B00100011
-#define SERIAL_9O1	0B00001011
-#define SERIAL_9O2	0B00101011
 
 
-/* Roger Clark 
- * Moved macros from hardwareSerial.cpp
- */
 
-
-	
-
-
-/* Roger clark. Changed class inheritance from Print to Stream.
- * Also added new functions for peek() and availableForWrite()
- * Note. AvailableForWrite is only a stub function in the cpp
- */
-class HardwareSerial : public Print {
+class HardwareSerial : public Stream {
 
 public:
     HardwareSerial(struct usart_dev *usart_device);
@@ -149,35 +81,9 @@ private:
     uint8_t tx_pin;
     uint8_t rx_pin;
   protected:
-#if 0  
-    volatile uint8_t * const _ubrrh;
-    volatile uint8_t * const _ubrrl;
-    volatile uint8_t * const _ucsra;
-    volatile uint8_t * const _ucsrb;
-    volatile uint8_t * const _ucsrc;
-    volatile uint8_t * const _udr;
-    // Has any byte been written to the UART since begin()
-    bool _written;
 
-    volatile rx_buffer_index_t _rx_buffer_head;
-    volatile rx_buffer_index_t _rx_buffer_tail;
-    volatile tx_buffer_index_t _tx_buffer_head;
-    volatile tx_buffer_index_t _tx_buffer_tail;	
-    // Don't put any members after these buffers, since only the first
-    // 32 bytes of this struct can be accessed quickly using the ldd
-    // instruction.
-    unsigned char _rx_buffer[SERIAL_RX_BUFFER_SIZE];
-    unsigned char _tx_buffer[SERIAL_TX_BUFFER_SIZE];	
-#endif
 };
 
-//#define DEFINE_HWSERIAL_UART(name, n)                             \
-//	HardwareSerial name(USART##n)  
-//    
-//extern DEFINE_HWSERIAL(Serial, 0);							
-//extern DEFINE_HWSERIAL(Serial1, 1);
-//extern DEFINE_HWSERIAL(Serial2, 2);
-//extern DEFINE_HWSERIAL(Serial3, 3);
 
 
 extern HardwareSerial Serial0; 
