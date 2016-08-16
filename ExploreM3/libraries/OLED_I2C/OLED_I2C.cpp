@@ -21,7 +21,6 @@
 */
 
 #include "OLED_I2C.h"
-#include "hardware/arm/HW_STM32.h"
 #include "delay.h"
 #include <stdio.h>
 
@@ -248,6 +247,14 @@ void OLED::printNumI(long num, int x, int y, int length, char filler)
 	}
 
 	print(st,x,y);
+}
+
+void OLED::_convert_float(char *buf, double num, int width, byte prec)
+{
+	char format[10];
+	
+	sprintf(format, "%%%i.%if", width, prec);
+	sprintf(buf, format, num);
 }
 
 void OLED::printNumF(double num, byte dec, int x, int y, char divider, int length, char filler)
@@ -846,3 +853,56 @@ void OLED::_writeByte(uint8_t value)
 	shiftOut(_sda_pin, _scl_pin, MSBFIRST, value);
 }
 
+
+
+
+
+
+void OLED::update()
+{
+	
+	_sendTWIcommand(SSD1306_SET_COLUMN_ADDR);
+	_sendTWIcommand(0);
+	_sendTWIcommand(127);
+
+	_sendTWIcommand(SSD1306_SET_PAGE_ADDR);
+	_sendTWIcommand(0);
+	_sendTWIcommand(7);
+	
+
+    
+	_sendStart(SSD1306_ADDR<<1);
+    
+	_waitForAck();
+    
+	_writeByte(SSD1306_DATA_CONTINUE);
+    
+	_waitForAck();
+    
+
+	for (int b=0; b<1024; b++)		// Send data
+
+		{  
+			_writeByte(scrbuf[b]);
+			_waitForAck();
+		}
+
+
+		_sendStop();
+	
+}
+
+void OLED::_sendTWIcommand(uint8_t value)
+{
+		_sendStart(SSD1306_ADDR<<1);
+		_waitForAck();
+        
+		_writeByte(SSD1306_COMMAND);
+		_waitForAck();
+        
+		_writeByte(value);
+		_waitForAck();
+        
+		_sendStop();
+
+}

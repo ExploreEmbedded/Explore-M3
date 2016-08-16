@@ -39,7 +39,7 @@
  * @brief Initialize the pseudo-random number generator.
  * @param seed the number used to initialize the seed; cannot be zero.
  */
-void randomSeed(unsigned int seed);
+void randomSeed(unsigned int newseed);
 
 /**
  * @brief Generate a pseudo-random number with upper bound.

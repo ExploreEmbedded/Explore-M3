@@ -38,7 +38,7 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
 #include "gpio.h"
 
 
-void GPIO_PinFunction(gpioPins_et enm_pinNumber, uint8_t var_pinFunction_u8)
+inline void GPIO_PinFunction(gpioPins_et enm_pinNumber, uint8_t var_pinFunction_u8)
 {
     uint8_t var_portNumber_u8;
 	uint32_t *ptr_PINCON;
@@ -60,7 +60,7 @@ void GPIO_PinFunction(gpioPins_et enm_pinNumber, uint8_t var_pinFunction_u8)
     ptr_PINCON    = ((uint32_t *)&LPC_PINCON->PINSEL0  + var_portNumber_u8);
     
     *(uint32_t *)(ptr_PINCON) &= ~(0x03UL << var_pinNumber_u8);
-	*(uint32_t *)(ptr_PINCON) |= (((uint32_t)var_pinFunction_u8) << var_pinNumber_u8);
+	*(uint32_t *)(ptr_PINCON) |= (((uint32_t)(var_pinFunction_u8 & 0x03)) << var_pinNumber_u8);
     
 }
 
@@ -79,7 +79,7 @@ void GPIO_PinFunction(gpioPins_et enm_pinNumber, uint8_t var_pinFunction_u8)
 
  * description :This function sets the specified direction as INPUT/OUTPUT.  
  ***************************************************************************************************/
-void GPIO_PinDirection(gpioPins_et enm_pinNumber, uint8_t var_pinDirn_u8)
+inline void GPIO_PinDirection(gpioPins_et enm_pinNumber, uint8_t var_pinDirn_u8)
 {
 
     uint8_t var_portNumber_u8;
@@ -93,7 +93,7 @@ void GPIO_PinDirection(gpioPins_et enm_pinNumber, uint8_t var_pinDirn_u8)
         set the direction as specified*/
     
     LPC_GPIO_PORT = (LPC_GPIO_TypeDef*)(LPC_GPIO_BASE + ((var_portNumber_u8) << 5));
-    util_UpdateBit(LPC_GPIO_PORT->FIODIR,var_pinNumber_u8,var_pinDirn_u8);   
+    util_UpdateBit(LPC_GPIO_PORT->FIODIR,var_pinNumber_u8,(var_pinDirn_u8 & 0x01));   
 }
 
 
@@ -119,7 +119,7 @@ void GPIO_PinDirection(gpioPins_et enm_pinNumber, uint8_t var_pinDirn_u8)
                 Before updating the pins status, the pin function should be selected and then
                 the pin should be configured as OUTPUT 
 ***************************************************************************************************/
-void GPIO_PinWrite(gpioPins_et enm_pinNumber, uint8_t var_pinValue_u8)
+inline void GPIO_PinWrite(gpioPins_et enm_pinNumber, uint8_t var_pinValue_u8)
 {
 
     uint8_t var_portNumber_u8;
@@ -133,7 +133,7 @@ void GPIO_PinWrite(gpioPins_et enm_pinNumber, uint8_t var_pinValue_u8)
         update the value of the specified pin*/
     
     LPC_GPIO_PORT = (LPC_GPIO_TypeDef*)(LPC_GPIO_BASE + ((var_portNumber_u8) << 5));
-    util_UpdateBit(LPC_GPIO_PORT->FIOPIN,var_pinNumber_u8,var_pinValue_u8);                
+    util_UpdateBit(LPC_GPIO_PORT->FIOPIN,var_pinNumber_u8,(var_pinValue_u8&0x01));                
 }
 
 
@@ -157,7 +157,7 @@ void GPIO_PinWrite(gpioPins_et enm_pinNumber, uint8_t var_pinValue_u8)
                 Before reading the pins status, the pin function should be selected and accordingly
                 the pin should be configured as INPUT 
  ***************************************************************************************************/
-uint8_t GPIO_PinRead(gpioPins_et enm_pinNumber)
+inline uint8_t GPIO_PinRead(gpioPins_et enm_pinNumber)
 {
     uint8_t returnStatus = 0;
     uint8_t var_portNumber_u8;

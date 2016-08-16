@@ -45,7 +45,6 @@
 #include "wiring_digital.h"
 #include "wiring_analog.h"
 #include "wirish_time.h"
-#include "binary.h"   //added to support B00001000 arduino notation instead of 0b00001000
 //#include "WCharacter.h"
 
 
@@ -55,6 +54,7 @@
 extern void loop();
 extern void setup();
 extern void init( void );
+
 
 #ifdef __cplusplus
 extern "C"{
@@ -87,7 +87,3 @@ unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout = 10
 #endif /* __ARDUINO_H__ */
 
 /*lint -restore */
-
-//this needs to be moved to a appropriate place, keeping it here for testing.
-
-typedef unsigned int word;

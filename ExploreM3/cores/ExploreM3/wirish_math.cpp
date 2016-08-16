@@ -26,7 +26,7 @@
 
 static uint32_t seed;
 
-void randomSeed(uint32_t newseed)
+void randomSeed(unsigned int newseed)
 {
 	if (newseed > 0) seed = newseed;
 }
@@ -63,4 +63,15 @@ int32_t random(int32_t howsmall, int32_t howbig)
 	int32_t diff = howbig - howsmall;
 	return random(diff) + howsmall;
 }
+
+
+long random(long howbig)
+{
+  if (howbig == 0) {
+    return 0;
+  }
+  return random() % howbig;
+}
+
+
 

@@ -41,8 +41,7 @@ int main( void )
   SystemInit();
   SystemCoreClockUpdate();
   rgbInit();
-  SysTick_Init();
-  SysTick_Start();
+
 
   count = __preinit_array_end - __preinit_array_start;
   for (i = 0; i < count; i++)
@@ -51,6 +50,9 @@ int main( void )
   count = __init_array_end - __init_array_start;
   for (i = 0; i < count; i++)
     __init_array_start[i] ();
+
+  SysTick_Init();
+  SysTick_Start();
   
   
 	setup();

@@ -24,7 +24,7 @@
 #define OLED_I2C_h
 //#include "stdutils.h"
 
-#define SSD1306_ADDR		0x3D
+#define SSD1306_ADDR		0x3C
 
 #define LEFT	0
 #define RIGHT	9999
@@ -78,11 +78,13 @@
 
 
 #include "Arduino.h"
-#include "hardware/arm/HW_STM32_defines.h"
 
 
 
+#define fontbyte(x) cfont.font[x]  
+#define bitmapbyte(x) bitmap[x]
 
+#define bitmapdatatype unsigned char*
 
 struct _current_font
 {
@@ -93,6 +95,7 @@ struct _current_font
 	uint8_t numchars;
 	uint8_t inverted;
 };
+
 
 class OLED
 {

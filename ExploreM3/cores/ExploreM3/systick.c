@@ -197,7 +197,7 @@ uint32_t micros(void)
 void SysTick_Handler(void)
 {
     V_SysTickMiliSecCount_U32++;
-    if(sysTickCallBack != NULL)
+   if(sysTickCallBack != NULL)
     {
        sysTickCallBack(); 
     }    

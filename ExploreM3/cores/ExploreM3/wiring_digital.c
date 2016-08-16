@@ -24,13 +24,13 @@
 
 extern void pinMode( uint32_t ulPin, uint32_t ulMode )
 {
-   if(ulPin<BOARD_MAX_GPIO_PINS)
+   
    GPIO_PinDirection(PIN_MAP[ulPin],ulMode);
 }
 
 extern void digitalWrite( uint32_t ulPin, uint32_t ulVal )
 {
-    if(ulPin<BOARD_MAX_GPIO_PINS)
+    
     GPIO_PinWrite(PIN_MAP[ulPin],ulVal);
 }
 
@@ -38,7 +38,7 @@ extern int digitalRead( uint32_t ulPin )
 {
     int value=0;
     
-  if(ulPin<BOARD_MAX_GPIO_PINS)
+ 
      value = GPIO_PinRead(PIN_MAP[ulPin]);
  
 	return value;
@@ -46,14 +46,24 @@ extern int digitalRead( uint32_t ulPin )
 
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value) {
-    digitalWrite(clockPin, LOW);
-    for (int i = 0; i < 8; i++) 
-    {  
-        int bit = bitOrder == LSBFIRST ? i : (7 - i);
-
-        digitalWrite(dataPin, (value >> bit) & 0x1);
-		digitalWrite(clockPin, HIGH); 
-        digitalWrite(clockPin, LOW);
+      
+    if(bitOrder == LSBFIRST )
+    {
+       for (int bit = 0; bit < 8; bit++) 
+        {  
+          GPIO_PinWrite(PIN_MAP[dataPin], (value >> bit) & 0x1);
+		  GPIO_PinWrite(PIN_MAP[clockPin], HIGH); 
+          GPIO_PinWrite(PIN_MAP[clockPin], LOW);
+        }
+    }
+    else
+    {
+        for (int bit = 7; bit >= 0; bit--) 
+        {  
+          GPIO_PinWrite(PIN_MAP[dataPin], (value >> bit) & 0x1);
+		  GPIO_PinWrite(PIN_MAP[clockPin], HIGH); 
+          GPIO_PinWrite(PIN_MAP[clockPin], LOW);
+        }  
     }
 }
 

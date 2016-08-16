@@ -197,10 +197,11 @@ void USB_EndPoint2 (uint32_t event) {
 
   switch (event) {
     case USB_EVT_OUT:
-      CDC_BulkOut ();                /* data received from Host */
+      CDC_BulkOut ();                /* data received from Host, Microcontroller Rx */
+      
       break;
     case USB_EVT_IN:
-      CDC_BulkIn ();                 /* data expected from Host */
+      CDC_BulkIn ();                 /* data expected from Host, Microntroller Tx */
       break;
   }
 }
