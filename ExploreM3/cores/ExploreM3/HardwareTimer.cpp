@@ -35,7 +35,7 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
 #include "lpc17xx.h"
 #include "stdutils.h"
 #include "timer.h"
-#include "uart.h"
+
 
 
 
@@ -44,7 +44,7 @@ HardwareTimer::HardwareTimer(uint8_t timerNum) {
     if(timerNum<TIMER_MAX)
     {
        this->dev = TIMER_Init(timerNum);  
-        UART0_Init(9600);       
+            
     }
     else
     {

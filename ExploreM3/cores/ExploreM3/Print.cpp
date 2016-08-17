@@ -299,7 +299,7 @@ size_t Print::printf(const char *argList, ...)
             }
             else
             {
-                numOfDigits = C_MaxDigitsToTransmitUsingPrintf_U8;
+                numOfDigits = 0xff;
             }                
 
 

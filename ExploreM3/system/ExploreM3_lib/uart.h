@@ -39,13 +39,13 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
 15.0: Initial version 
 ***************************************************************************************************/
 #ifdef __cplusplus
-extern "C" {
-#endif
+ extern "C" {
+#endif 
 
 #ifndef _UART_H_
 #define _UART_H_
 
-#include <lpc17xx.h>
+#include "lpc17xx.h"
 #include "stdutils.h"
 #include "gpio.h"
 
@@ -205,9 +205,9 @@ void UART_Printf(uint8_t var_uartChannel_u8, const char *argList, ...);
 #define UART3_Printf(var_arg_list...) UART_Printf(C_UartThree_U8, var_arg_list)
 /****************************************************************************************************/
 #endif
+
 #ifdef __cplusplus
 }
 #endif
-
 
 

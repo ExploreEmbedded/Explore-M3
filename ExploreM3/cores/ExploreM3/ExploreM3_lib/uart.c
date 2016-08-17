@@ -41,21 +41,42 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
  ***************************************************************************************************/
 #include <stdarg.h>
 #include "uart.h"
+#include "usart.h"
 #include "gpio.h"
+#include "rgb.h"
+#include "lpc17xx.h"
 
 #define C_MaxUartChannels_U8 4u
 #define C_UartOne_U8         1u
 
-
-const uartChannelConfig_st STR_UartConfig[C_MaxUartChannels_U8]=
+usart_channel_map USART_BASE[4]=
 {  /* TxPin RxPin UART_PinFun   PCON Bit Associated UART Structure    */
     { P0_2, P0_3, PINSEL_FUNC_1,  3     ,(LPC_UART_TypeDef *)LPC_UART0_BASE}, /* Configure P0_2,P0_3 for UART0 function */
-    { P2_0, P2_1, PINSEL_FUNC_2,  4     ,(LPC_UART_TypeDef *)LPC_UART1_BASE}, /* Configure P2_0,P2_1 for UART1 function */
+    { P0_15, P0_16, PINSEL_FUNC_1,  4     ,(LPC_UART_TypeDef *)LPC_UART1_BASE}, /* Configure P2_0,P2_1 for UART1 function */
     { P0_10,P0_11,PINSEL_FUNC_1,  24    ,(LPC_UART_TypeDef *)LPC_UART2_BASE}, /* Configure P0_10,P0_11 for UART2 function */
-    { P4_28,P4_29,PINSEL_FUNC_3,  25    ,(LPC_UART_TypeDef *)LPC_UART3_BASE}  /* Configure P4_28,P4_29 for UART3 function */ 
+    { P0_0,P0_1,PINSEL_FUNC_2,  25    ,(LPC_UART_TypeDef *)LPC_UART3_BASE}  /* Configure P4_28,P4_29 for UART3 function */ 
 };
 
 
+void UART0_IRQHandler(void)
+{
+    USART0->userFunction();
+}
+
+void UART1_IRQHandler(void)
+{
+    USART1->userFunction();
+}
+
+void UART2_IRQHandler(void)
+{
+    USART2->userFunction();
+}
+
+void UART3_IRQHandler(void)
+{
+    USART3->userFunction();
+}
 
 /***************************************************************************************************
                     void UART_Init(uint8_t var_uartChannel_u8, uint32_t var_baudRate_u32)
@@ -74,15 +95,15 @@ void UART_Init(uint8_t var_uartChannel_u8, uint32_t var_baudRate_u32)
 {    
     if(var_uartChannel_u8< C_MaxUartChannels_U8)
     {	 
-        GPIO_PinFunction(STR_UartConfig[var_uartChannel_u8].TxPin,STR_UartConfig[var_uartChannel_u8].PinFunSel);
-        GPIO_PinFunction(STR_UartConfig[var_uartChannel_u8].RxPin,STR_UartConfig[var_uartChannel_u8].PinFunSel);
-		util_BitSet(LPC_SC->PCONP,STR_UartConfig[var_uartChannel_u8].pconBit);
+        GPIO_PinFunction(USART_BASE[var_uartChannel_u8].TxPin,USART_BASE[var_uartChannel_u8].PinFunSel);
+        GPIO_PinFunction(USART_BASE[var_uartChannel_u8].RxPin,USART_BASE[var_uartChannel_u8].PinFunSel);
+		util_BitSet(LPC_SC->PCONP,USART_BASE[var_uartChannel_u8].pconBit);
         
         /* Enable FIFO and reset Rx/Tx FIFO buffers */
-        STR_UartConfig[var_uartChannel_u8].UARTx->FCR = (1<<SBIT_FIFO) | (1<<SBIT_RxFIFO) | (1<<SBIT_TxFIFO); 
+        USART_BASE[var_uartChannel_u8].UARTx->FCR = (1<<SBIT_FIFO) | (1<<SBIT_RxFIFO) | (1<<SBIT_TxFIFO); 
 
         /* 8bit data, 1Stop bit, No parity */
-        STR_UartConfig[var_uartChannel_u8].UARTx->LCR = (0x03<<SBIT_WordLenght) | (1<<SBIT_DLAB);
+        USART_BASE[var_uartChannel_u8].UARTx->LCR = (0x03<<SBIT_WordLenght) | (1<<SBIT_DLAB);
 
         UART_SetBaudRate(var_uartChannel_u8,var_baudRate_u32);    
     }
@@ -144,10 +165,10 @@ void UART_SetBaudRate(uint8_t var_uartChannel_u8, uint32_t var_baudRate_u32)
 
          var_RegValue_u32 = ( var_Pclk_u32 / (16 * var_baudRate_u32 )); 
 
-		 STR_UartConfig[var_uartChannel_u8].UARTx->DLL = util_ExtractByte0to8(var_RegValue_u32);
-         STR_UartConfig[var_uartChannel_u8].UARTx->DLM = util_ExtractByte8to16(var_RegValue_u32);
+		 USART_BASE[var_uartChannel_u8].UARTx->DLL = util_ExtractByte0to8(var_RegValue_u32);
+         USART_BASE[var_uartChannel_u8].UARTx->DLM = util_ExtractByte8to16(var_RegValue_u32);
          
-         util_BitClear(STR_UartConfig[var_uartChannel_u8].UARTx->LCR, SBIT_DLAB); // Clear DLAB after setting DLL,DLM
+         util_BitClear(USART_BASE[var_uartChannel_u8].UARTx->LCR, SBIT_DLAB); // Clear DLAB after setting DLL,DLM
     } 
 }
 
@@ -171,8 +192,8 @@ char UART_RxChar(uint8_t var_uartChannel_u8)
     if(var_uartChannel_u8 < C_MaxUartChannels_U8 )
     {
           /* Wait till the data is received */
-         while(util_IsBitCleared(STR_UartConfig[var_uartChannel_u8].UARTx->LSR,SBIT_RDR)); 
-         ch = STR_UartConfig[var_uartChannel_u8].UARTx->RBR; // Copy the received data
+         while(util_IsBitCleared(USART_BASE[var_uartChannel_u8].UARTx->LSR,SBIT_RDR)); 
+         ch = USART_BASE[var_uartChannel_u8].UARTx->RBR; // Copy the received data
     }
     return ch;    
 }
@@ -196,8 +217,8 @@ void UART_TxChar(uint8_t var_uartChannel_u8, char var_uartData_u8)
 {
     if(var_uartChannel_u8 < C_MaxUartChannels_U8)
     {
-       while(util_IsBitCleared(STR_UartConfig[var_uartChannel_u8].UARTx->LSR,SBIT_THRE)); // Wait for Previous transmission
-       STR_UartConfig[var_uartChannel_u8].UARTx->THR=var_uartData_u8;   // Load the data to be transmitted   
+       while(util_IsBitCleared(USART_BASE[var_uartChannel_u8].UARTx->LSR,SBIT_THRE)); // Wait for Previous transmission
+       USART_BASE[var_uartChannel_u8].UARTx->THR=var_uartData_u8;   // Load the data to be transmitted   
     }
 }
 

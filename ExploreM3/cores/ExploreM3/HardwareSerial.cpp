@@ -72,7 +72,6 @@ void HardwareSerial::end(void) {
 void HardwareSerial::Send(uint8_t ch) {
 
     usart_putc(this->usart_device, ch);
-	//return 1;
 }
 
 
@@ -82,14 +81,14 @@ int HardwareSerial::read(void) {
 }
 
 int HardwareSerial::available(void) {
-    return 1; //Retruns 1 indicating data is available, While reding a char it waits till a char is received.
+    return ((unsigned int)usart_rx_available(this->usart_device));
 }
 
 
 
 int HardwareSerial::peek(void)
 {
-    return 0;//usart_peek(this->usart_device);
+    return usart_peek(this->usart_device);
 }
 
 int HardwareSerial::availableForWrite(void)

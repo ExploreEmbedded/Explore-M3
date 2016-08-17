@@ -37,6 +37,7 @@
 #include "cdc.h"
 #include "cdcuser.h"
 #include "rgb.h"
+#include "wirish_time.h"
 
 USBSerial Serial;
 
@@ -46,6 +47,7 @@ USBSerial::USBSerial(void)
   USB_Connect(TRUE);                        // USB Connect
   
   while (!USB_Configuration) ;              // wait until USB is configured 
+  delay(1000);
 }
 
 

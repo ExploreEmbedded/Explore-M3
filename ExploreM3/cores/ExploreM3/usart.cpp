@@ -1,36 +1,4 @@
-/******************************************************************************
- * The MIT License
- *
- * Copyright (c) 2010 Perry Hung.
- * Copyright (c) 2011 LeafLabs, LLC.
- *
- * Permission is hereby granted, free of charge, to any person
- * obtaining a copy of this software and associated documentation
- * files (the "Software"), to deal in the Software without
- * restriction, including without limitation the rights to use, copy,
- * modify, merge, publish, distribute, sublicense, and/or sell copies
- * of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *****************************************************************************/
 
-/**
- * @file libmaple/usart.c
- * @author Marti Bolivar <mbolivar@leaflabs.com>,
- *         Perry Hung <perry@leaflabs.com>
- * @brief Portable USART routines
- */
 #include "uart.h"
 #include "usart.h"
 #include "gpio.h"
@@ -38,75 +6,63 @@
 #include "lpc17xx.h"
 #include <inttypes.h>
 #include "HardwareSerial.h"
+#include "Arduino.h"
 
-/**
- * @brief Initialize a serial port.
- * @param dev         Serial port to be initialized
- */
-usart_channel_map USART_BASE[4]=
-{  /* TxPin RxPin UART_PinFun   PCON Bit Associated UART Structure    */
-    { P0_2, P0_3, PINSEL_FUNC_1,  3     ,(LPC_UART_TypeDef *)LPC_UART0_BASE}, /* Configure P0_2,P0_3 for UART0 function */
-    { P0_15, P0_16, PINSEL_FUNC_1,  4     ,(LPC_UART_TypeDef *)LPC_UART1_BASE}, /* Configure P2_0,P2_1 for UART1 function */
-    { P0_10,P0_11,PINSEL_FUNC_1,  24    ,(LPC_UART_TypeDef *)LPC_UART2_BASE}, /* Configure P0_10,P0_11 for UART2 function */
-    { P0_0,P0_1,PINSEL_FUNC_2,  25    ,(LPC_UART_TypeDef *)LPC_UART3_BASE}  /* Configure P4_28,P4_29 for UART3 function */ 
-};
+
+extern usart_channel_map USART_BASE[4]; //Defined in UART.c file
 
 
 
 
+void usart0_IRQHandler(void);
+void usart1_IRQHandler(void);
+void usart2_IRQHandler(void);
+void usart3_IRQHandler(void);
 
 
-// static ring_buffer usart0_rb;
 static usart_dev usart0 = {
     .channel     = &USART_BASE[0],
-//    .rb       = &usart0_rb,
-     .baud_rate = 0,
+    .baud_rate = 0,
     .max_baud = 4500000UL,
-    
- //   .clk_id   = RCC_USART0,
- //   .irq_num  = NVIC_USART0,
+    .irq_NUM = UART0_IRQn,
+    .userFunction = usart0_IRQHandler,
 };
-/** USART1 device */
 usart_dev *USART0 = &usart0;
 
 
 
-// static ring_buffer usart1_rb;
+
 static usart_dev usart1 = {
     .channel     = &USART_BASE[1],
- //   .rb       = &usart1_rb,
-  .baud_rate = 0,
+    .baud_rate = 0,
     .max_baud = 4500001UL,
- //   .clk_id   = RCC_USART1,
- //   .irq_num  = NVIC_USART1,
+    .irq_NUM = UART1_IRQn,
+    .userFunction = usart1_IRQHandler,
 };
-/** USART1 device */
 usart_dev *USART1 = &usart1;
 
 
 
-//static ring_buffer usart2_rb;
+
 static usart_dev usart2 = {
     .channel     = &USART_BASE[2],
-  //  .rb       = &usart2_rb,
-   .baud_rate = 0,
+    .baud_rate = 0,
     .max_baud = 2250001UL,
-  //  .clk_id   = RCC_USART2,
-  //  .irq_num  = NVIC_USART2,
+    .irq_NUM = UART2_IRQn,
+    .userFunction = usart2_IRQHandler,
 };
-/** USART2 device */
 usart_dev *USART2 = &usart2;
 
-//static ring_buffer usart3_rb;
+
+
+
 static usart_dev usart3 = {
     .channel     = &USART_BASE[3],
-  //  .rb       = &usart3_rb,
-   .baud_rate = 0,
+    .baud_rate = 0,
     .max_baud = 2250002UL,
- //   .clk_id   = RCC_USART3,
- //   .irq_num  = NVIC_USART3,
+    .irq_NUM = UART3_IRQn,
+    .userFunction = usart3_IRQHandler,
 };
-/** USART3 device */
 usart_dev *USART3 = &usart3;
 
 
@@ -115,15 +71,7 @@ usart_dev *USART3 = &usart3;
  
 void usart_init(usart_dev *dev) {
   uint32_t usartPclk,pclk,RegValue;
-  
-  //  rb_init(dev->rb, USART_RX_BUF_SIZE, dev->rx_buf);
-   // rcc_clk_enable(dev->clk_id);
-   // nvic_irq_enable(dev->irq_num);
-   
-    //    GPIO_PinFunction(STR_UartConfig[var_uartChannel_u8].TxPin,STR_UartConfig[var_uartChannel_u8].PinFunSel);
-    //    GPIO_PinFunction(STR_UartConfig[var_uartChannel_u8].RxPin,STR_UartConfig[var_uartChannel_u8].PinFunSel);
-	//	util_BitSet(LPC_SC->PCONP,STR_UartConfig[var_uartChannel_u8].pconBit);
-        
+          
         
         GPIO_PinFunction(dev->channel->TxPin,dev->channel->PinFunSel);
         GPIO_PinFunction(dev->channel->RxPin,dev->channel->PinFunSel);
@@ -170,45 +118,25 @@ void usart_init(usart_dev *dev) {
 
 		 dev->channel->UARTx->DLL = util_ExtractByte0to8(RegValue);
          dev->channel->UARTx->DLM = util_ExtractByte8to16(RegValue);
-         
-         util_BitClear(dev->channel->UARTx->LCR, SBIT_DLAB); // Clear DLAB after setting DLL,DLM        
-        
+         util_BitClear(dev->channel->UARTx->LCR, SBIT_DLAB); // Clear DLAB after setting DLL,DLM       
+         dev->channel->UARTx->IER = 0x01; // Enable Rx  interrupt     
+         NVIC_EnableIRQ(dev->irq_NUM);          
 }
 
 
 
-/**
- * @brief Enable a serial port.
- *
- * USART is enabled in single buffer transmission mode, multibuffer
- * receiver mode, 8n1.
- *
- * Serial port must have a baud rate configured to work properly.
- *
- * @param dev Serial port to enable.
- * @see usart_set_baud_rate()
- */
+
 void usart_enable(usart_dev *dev) {
- /*   usart_reg_map *regs = dev->regs;
-    regs->CR1 |= (USART_CR1_TE | USART_CR1_RE | USART_CR1_RXNEIE);// don't change the word length etc, and 'or' in the patten not overwrite |USART_CR1_M_8N1);
-    regs->CR1 |= USART_CR1_UE;*/
+
 }
 
-/**
- * @brief Turn off a serial port.
- * @param dev Serial port to be disabled
- */
+
 void usart_disable(usart_dev *dev) {
 
 }
 
-/**
- * @brief Nonblocking USART transmit
- * @param dev Serial port to transmit over
- * @param buf Buffer to transmit
- * @param len Maximum number of bytes to transmit
- * @return Number of bytes transmitted
- */
+
+
 uint32_t usart_tx(usart_dev *dev, const uint8_t *buf, uint32_t len) {
     usart_channel_map *regs = dev->channel;
     uint32_t txed = 0;
@@ -223,23 +151,43 @@ uint32_t usart_tx(usart_dev *dev, const uint8_t *buf, uint32_t len) {
  
 
 /**
- * @brief Nonblocking USART receive.
- * @param dev Serial port to receive bytes from
- * @param buf Buffer to store received bytes into
- * @param len Maximum number of bytes to store
  * @return Number of bytes received
  */
  
+unsigned int usart_rx_available(usart_dev *dev) 
+{
+    return ((dev->rx_buf_head -dev->rx_buf_tail) & USART_BUF_SIZE_MASK );
+}
+
 char usart_getc(usart_dev *dev)
 {
     char ch;
-   while(util_IsBitCleared(dev->channel->UARTx->LSR,SBIT_RDR)); 
-   ch = dev->channel->UARTx->RBR; // Copy the received data
+
+ 
+   if (dev->rx_buf_head == dev->rx_buf_tail) 
+   {
+    ch = -1;
+    }
+    else 
+    {
+       ch = dev->rx_buf[dev->rx_buf_tail];
+       dev->rx_buf_tail = (dev->rx_buf_tail + 1) & USART_BUF_SIZE_MASK;
+    }
    
    return ch;
 } 
 
-
+int usart_peek(usart_dev *dev)
+{
+  if (dev->rx_buf_head == dev->rx_buf_tail) 
+  {
+    return -1;
+  } 
+  else 
+  {
+    return dev->rx_buf[dev->rx_buf_tail];
+  }
+}
 
 uint32_t usart_rx(usart_dev *dev, uint8_t *buf, uint32_t len) {
     uint32_t rxed = 0;
@@ -254,20 +202,13 @@ uint32_t usart_rx(usart_dev *dev, uint8_t *buf, uint32_t len) {
     return rxed;
 }
 
-/**
- * @brief Transmit an unsigned integer to the specified serial port in
- *        decimal format.
- *
- * This function blocks until the integer's digits have been
- * completely transmitted.
- *
- * @param dev Serial port to send on
- * @param val Number to print
- */
- 
+
+
 void usart_putc(usart_dev *dev, char ch){
-    while (util_IsBitCleared(dev->channel->UARTx->LSR,SBIT_THRE));
-        dev->channel->UARTx->THR = ch; 
+
+      while (util_IsBitCleared(dev->channel->UARTx->LSR,SBIT_THRE));
+     dev->channel->UARTx->THR = ch;
+
 } 
 
 void usart_putudec(usart_dev *dev, uint32_t val) {
@@ -283,6 +224,132 @@ void usart_putudec(usart_dev *dev, uint32_t val) {
         usart_putc(dev, digits[i]);
     }
 }
+
+
+
+/***************************************************************************************************
+                            USART IRQ call backs
+****************************************************************************************************
+  Actual UART ISRs are in uart.c file.
+                                 
+****************************************************************************************************/
+#define IIR_RDA		0x04
+#define IIR_THRE	0x02
+#define LSR_THRE    0x10
+#define LSR_RDR     0x01
+
+void usart0_IRQHandler(void)
+{
+  uint32_t iir_reg,lsr_reg;
+  uint8_t uart_data, temp_head;
+	
+ 
+  iir_reg = LPC_UART0->IIR & 0x0f;
+
+  lsr_reg = LPC_UART0->LSR; 
+  
+  if(iir_reg == IIR_RDA)
+  {
+      if(lsr_reg & LSR_RDR)
+      {
+      uart_data = LPC_UART0->RBR;
+      temp_head = (USART0->rx_buf_head + 1) & USART_BUF_SIZE_MASK;
+      
+      if(temp_head != USART0->rx_buf_tail )
+      {
+          USART0->rx_buf[USART0->rx_buf_tail] = uart_data;
+          USART0->rx_buf_head = temp_head;
+      }
+      }     
+  }  
+}
+
+
+ 
+
+void usart1_IRQHandler(void)
+{
+   uint32_t iir_reg,lsr_reg;
+  uint8_t uart_data, temp_head;
+	
+ 
+  iir_reg = LPC_UART1->IIR & 0x0f;
+
+  lsr_reg = LPC_UART1->LSR; 
+  
+  if(iir_reg == IIR_RDA)
+  {
+      if(lsr_reg & LSR_RDR)
+      {
+      uart_data = LPC_UART1->RBR;
+      temp_head = (USART1->rx_buf_head + 1) & USART_BUF_SIZE_MASK;
+      
+      if(temp_head != USART1->rx_buf_tail )
+      {
+          USART1->rx_buf[USART1->rx_buf_tail] = uart_data;
+          USART1->rx_buf_head = temp_head;
+      }
+      }     
+  } 
+}
+
+
+void usart2_IRQHandler(void)
+{
+   uint32_t iir_reg,lsr_reg;
+  uint8_t uart_data, temp_head;
+	
+ 
+  iir_reg = LPC_UART2->IIR & 0x0f;
+
+  lsr_reg = LPC_UART2->LSR; 
+  
+  if(iir_reg == IIR_RDA)
+  {
+      if(lsr_reg & LSR_RDR)
+      {
+      uart_data = LPC_UART2->RBR;
+      temp_head = (USART2->rx_buf_head + 1) & USART_BUF_SIZE_MASK;
+      
+      if(temp_head != USART2->rx_buf_tail )
+      {
+          USART2->rx_buf[USART2->rx_buf_tail] = uart_data;
+          USART2->rx_buf_head = temp_head;
+      }
+      }     
+  } 
+}
+
+
+void usart3_IRQHandler(void)
+{
+  uint32_t iir_reg,lsr_reg;
+  uint8_t uart_data, temp_head;
+	
+ 
+  iir_reg = LPC_UART3->IIR & 0x0f;
+
+  lsr_reg = LPC_UART3->LSR; 
+  
+  if(iir_reg == IIR_RDA)
+  {
+      if(lsr_reg & LSR_RDR)
+      {
+      uart_data = LPC_UART3->RBR;
+      temp_head = (USART3->rx_buf_head + 1) & USART_BUF_SIZE_MASK;
+      
+      if(temp_head != USART3->rx_buf_tail )
+      {
+          USART3->rx_buf[USART3->rx_buf_tail] = uart_data;
+          USART3->rx_buf_head = temp_head;
+      }
+      }     
+  } 
+}
+/*************************************************************************************************
+                                    END of  ISR's 
+*************************************************************************************************/
+
 
 
 HardwareSerial Serial0(USART0); 

@@ -35,7 +35,7 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
 #include "lpc17xx.h"
 #include "timer.h"
 #include "stdutils.h"
-#include "uart.h"
+
 
 
 
