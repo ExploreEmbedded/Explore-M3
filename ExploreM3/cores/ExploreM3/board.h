@@ -51,15 +51,15 @@ extern const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS];
 /************************************
              ADC pins
 ************************************/             
-static unsigned const int A0 = 32;
-static unsigned const int A1 = 33;
-static unsigned const int A2 = 34;
-static unsigned const int A3 = 35;
-static unsigned const int A4 = 36;
-static unsigned const int A5 = 37;
+static unsigned const int A0 = 37;
+static unsigned const int A1 = 36;
+static unsigned const int A2 = 35;
+static unsigned const int A3 = 34;
+static unsigned const int A4 = 33;
+//static unsigned const int A5 = 37;
 
 #define ANALOG_ZERO  A0
-#define ANALOG_MAX   A5
+#define ANALOG_MAX   A4
 /**********End of ADC pins********/
 
 
