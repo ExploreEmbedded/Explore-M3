@@ -64,6 +64,10 @@ extern int digitalRead( uint32_t ulPin ) ;
 
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);
 
+//for direct port access
+inline volatile uint32_t * digitalPinToPort(int Pin);
+inline uint32_t digitalPinToBitMask(int Pin);
+
 #ifdef __cplusplus
 }
 #endif

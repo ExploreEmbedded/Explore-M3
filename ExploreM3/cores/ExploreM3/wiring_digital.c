@@ -67,6 +67,29 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
     }
 }
 
+/********************************************************************************************************************
+Various libraries use direct port accesss for faster gpio operation, these can be moved later to an appropriate place.
+
+*********************************************************************************************************************/
+//returns pointer to the port
+
+inline volatile uint32_t * digitalPinToPort(int Pin)
+{
+    uint8_t var_portNumber_u8;
+    LPC_GPIO_TypeDef *LPC_GPIO_PORT;
+    var_portNumber_u8 =  (PIN_MAP[Pin]>>5);
+    LPC_GPIO_PORT =  (LPC_GPIO_TypeDef*)(LPC_GPIO_BASE + ((var_portNumber_u8) << 5));
+    return &LPC_GPIO_PORT->FIOPIN;
+}
+
+//returns pin Mask 
+inline uint32_t digitalPinToBitMask(int Pin)
+{
+   return (util_GetBitMask(PIN_MAP[Pin] & 0x1f)); //get the pin Mask
+}
+
+
+
     
 #ifdef __cplusplus
 }
