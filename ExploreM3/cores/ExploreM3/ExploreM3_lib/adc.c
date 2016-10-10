@@ -98,9 +98,7 @@ void ADC_Init()
                  and returns the converted 12 bit result
                  The ADC value per bit depends on the resolution of the ADC.
 ***************************************************************************************************/	
-#define FILTER 0
 
-#if (FILTER == 1)			 
 uint16_t ADC_GetAdcValue(uint8_t v_adcChannel_u8)
 {
     uint16_t v_adcResult_u16,oldResult=0,cnt=0,finalResult=0;
@@ -110,59 +108,16 @@ uint16_t ADC_GetAdcValue(uint8_t v_adcChannel_u8)
         adcInitDoneFlag_u32=1;
          ADC_Init();
     }
-   
-    v_adcChannel_u8 = v_adcChannel_u8-P0_23;
-    if((v_adcChannel_u8 >= 0) &&  (v_adcChannel_u8 <= 6))
+    
+    if(v_adcChannel_u8 == P1_31)
     {
-        
-        /* Select channel is with range, COnfigure the channel for ADC and DO the A/D conversion */ 
-        GPIO_PinFunction(AdcConfig[v_adcChannel_u8].pinNumber,AdcConfig[v_adcChannel_u8].PinFunSel);
-        LPC_ADC->ADCR  = (LPC_ADC->ADCR  & 0xFFFFFF00) | (0x01 << v_adcChannel_u8 );     /* set the channel */
-
-        delay_us(10);        /* allow the channel voltage to stabilize*/
-        
-        while(cnt<=3)
-        {
-               util_BitSet(LPC_ADC->ADCR,SBIT_START);           /*Start ADC conversion*/    
-               while(util_GetBitStatus(LPC_ADC->ADGDR,SBIT_DONE)==0);   /* wait till conversion completes */
-
-               v_adcResult_u16 = (LPC_ADC->ADGDR >> SBIT_RESULT) & 0xfff; /*Read the 12bit adc result*/
-        
-               if((v_adcResult_u16>=(oldResult+10)) || ((v_adcResult_u16+10)<=(oldResult)))
-               {
-                   oldResult = v_adcResult_u16;
-                   finalResult = 0;
-                   cnt = 0;
-               }
-               else
-               {
-                  finalResult+= v_adcResult_u16;
-                  cnt++; 
-               }          
-        }
-
-
-    }
+        v_adcChannel_u8 = 5;
+    }       
     else
     {
-        /* Channel is out of range, return 0*/
-        v_adcResult_u16 = 0;  
-    }        
-
-    return((finalResult>>2));                                    /* Return the 12-bit result */
-}
-#else
-uint16_t ADC_GetAdcValue(uint8_t v_adcChannel_u8)
-{
-    uint16_t v_adcResult_u16,oldResult=0,cnt=0,finalResult=0;
-    
-    if(adcInitDoneFlag_u32==0)
-    {
-        adcInitDoneFlag_u32=1;
-         ADC_Init();
+        v_adcChannel_u8 = v_adcChannel_u8-P0_23;
     }
-   
-    v_adcChannel_u8 = v_adcChannel_u8-P0_23;
+
     if((v_adcChannel_u8 >= 0) &&  (v_adcChannel_u8 <= 6))
     {
         
@@ -188,8 +143,6 @@ uint16_t ADC_GetAdcValue(uint8_t v_adcChannel_u8)
 
     return(v_adcResult_u16);                                    /* Return the 12-bit result */
 }
-
-#endif
 
 
  

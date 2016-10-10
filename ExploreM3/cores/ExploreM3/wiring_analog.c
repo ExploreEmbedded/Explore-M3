@@ -24,18 +24,11 @@ extern "C" {
 #endif
 
 
-
-
-
-
-
-
-
 uint32_t analogRead(uint32_t ulPin)
 {
   uint32_t ulValue = 0;
   /* read the analog value only if the pin is within range */
-   if((ulPin>=ANALOG_ZERO) && (ulPin<=ANALOG_MAX))
+  if((ulPin>=ANALOG_MAX) && (ulPin<=ANALOG_ZERO))
     {
       ulValue = ADC_GetAdcValue(PIN_MAP[ulPin]);
     }
