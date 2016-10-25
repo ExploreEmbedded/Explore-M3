@@ -201,7 +201,7 @@ void USB_EndPoint2 (uint32_t event) {
       
       break;
     case USB_EVT_IN:
-      CDC_BulkIn ();                 /* data expected from Host, Microntroller Tx */
+      CDC_BulkIn ();                 /* data expected  from Host, Microntroller Tx */
       break;
   }
 }

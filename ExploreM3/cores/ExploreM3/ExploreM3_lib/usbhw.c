@@ -461,6 +461,9 @@ uint32_t USB_WriteEP (uint32_t EPNum, uint8_t *pData, uint32_t cnt) {
   return (cnt);
 }
 
+
+
+
 #if USB_DMA
 
 /* DMA Descriptor Memory Layout */

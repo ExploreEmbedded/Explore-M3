@@ -109,21 +109,6 @@ static unsigned const int A4 = 33;
 #define   SS         SPI1_SS
 /**********End of SPI pins***********/
 
-/* typedef struct
-{ 
-  gpioPins_et TxPin;
-  gpioPins_et RxPin;
-  uint8_t PinFunSel;
-  uint8_t pconBit;
-  LPC_UART_TypeDef *UARTx;
-}uartChannelConfig_st;
-
-
-typedef struct
-{
-  gpioPins_et pinNumber;
-  uint8_t PinFunSel;
-}adcChannelConfig_st; */
 
 
 #endif

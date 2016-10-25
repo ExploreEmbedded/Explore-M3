@@ -3,7 +3,7 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x00004000, LENGTH = 512K
+  FLASH (rx) : ORIGIN = 0x00002000, LENGTH = 480K
   RAM (rwx) : ORIGIN = 0x10000000, LENGTH = 0x8000
 
   USB_RAM(rwx) : ORIGIN = 0x2007C000, LENGTH = 16K
@@ -44,6 +44,8 @@ GROUP(libgcc.a
       libnosys.a )
 
 ENTRY(Reset_Handler)
+
+
 
 SECTIONS
 {
@@ -129,14 +131,17 @@ SECTIONS
         *(COMMON)
         __bss_end__ = .;
     } > RAM
-    
-    .heap :
-    {
-        __end__ = .;
-        end = __end__;
-        *(.heap*)
-        __HeapLimit = .;
-    } > RAM
+       
+.heap : {
+
+    __heap_start__ = heap;
+
+    KEEP(*(.heap))
+      end = __heap_start__;
+    __heap_end__ = .;
+        _end = __heap_end__;
+    __HeapLimit = __heap_end__ - __heap_start__;
+} > RAM
 
     /* .stack_dummy section doesn't contains any symbols. It is only
      * used for linker to calculate size of stack sections, and assign
@@ -155,3 +160,5 @@ SECTIONS
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 }
+
+

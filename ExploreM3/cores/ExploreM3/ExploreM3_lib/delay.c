@@ -34,7 +34,7 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
 #include "delay.h"
 
 
-#define MicroSecDelayCount    7
+
 
 /*---------------------------------------------------------------------------------
                        void delay_us(unsigned int us_count)

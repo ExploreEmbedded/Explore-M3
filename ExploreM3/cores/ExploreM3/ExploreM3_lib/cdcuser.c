@@ -24,6 +24,11 @@
 #include "usbcore.h"
 #include "cdc.h"
 #include "cdcuser.h"
+#include "LPC17xx.h"
+#include "gpio.h"
+#include "delay.h"
+#include "iap_drv.h"
+
 
 
 
@@ -126,6 +131,7 @@ void CDC_Init (char portNum ) {
   CDC_SerialState = CDC_GetSerialState();
 
   CDC_BUF_RESET(CDC_OutBuf);
+  
 }
 
 
@@ -278,12 +284,56 @@ TxDoneFlag = 1;
   Parameters:   none
   Return Value: none
  *---------------------------------------------------------------------------*/
+ unsigned char resetString[6]={"RSTM3"},rstIndex=0;
+ unsigned char inPutBuffer[100];
+ extern flash_eeprom_st eepMem;
 void CDC_BulkOut(void) {
-  int numBytesRead;
+  int numBytesRead,j,k;
 
   // get data from USB into intermediate buffer
   numBytesRead = USB_ReadEP(CDC_DEP_OUT, &BulkBufOut[0]);
+  for(j=0;j<numBytesRead;j++)
+  {
+      inPutBuffer[j] = BulkBufOut[j];
+  }
+  
+  for(k=0;k<j;k++)
+  {
+     if(resetString[rstIndex]==inPutBuffer[k])
+     {
+         rstIndex++;
+         if(rstIndex>=5)
+         {
 
+             GPIO_PinFunction(P2_9,0);
+             GPIO_PinDirection(P2_9,OUTPUT);             
+             GPIO_PinWrite(P2_9,1); delay_ms(1);
+             GPIO_PinWrite(P2_9,0); delay_ms(1);
+             
+             USB_Connect(0);
+             delay_ms(10);
+             NVIC_DisableIRQ(USB_IRQn); 
+
+             
+             iap_init();
+             iap_read(29,0,eepMem.ResetString,sizeof(eepMem));
+             iap_erase(29);
+             strcpy(eepMem.ResetString ,resetString);
+             iap_write(29,0,eepMem.ResetString,sizeof(eepMem));
+             
+             delay_ms(1000);
+             
+             NVIC_SystemReset();
+             
+         }
+     }    
+    else
+    {
+       rstIndex=0;
+    }    
+  }
+  
+  
   // store data in a buffer to transmit it over serial interface
    CDC_WrOutBuf ((char *)&BulkBufOut[0], &numBytesRead);
 

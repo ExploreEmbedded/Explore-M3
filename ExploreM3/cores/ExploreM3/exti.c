@@ -35,6 +35,7 @@ Errors and omissions should be reported to codelibraries@exploreembedded.com
 #include "exti.h"
 #include "stdutils.h"
 #include "gpio.h"
+#include "board.h"
 
 
 
@@ -82,8 +83,10 @@ eintConfig_t EintConfigTable[EINT_MAX] =
 *****************************************************************************************************/
 void attachInterrupt(uint8_t intNumber_u8, extnIntrFunPtr funPtr, uint8_t intMode_u8)
 {
-    if(intNumber_u8<EINT_MAX)
+    intNumber_u8 = PIN_MAP[intNumber_u8];
+    if((intNumber_u8 == P2_12) || (intNumber_u8 == P2_13))
     {
+        intNumber_u8 = intNumber_u8 - P2_10;
         GPIO_PinFunction(EintConfigTable[intNumber_u8].pinumber,PINSEL_FUNC_1);
         NVIC_EnableIRQ(EintConfigTable[intNumber_u8].IrqNumber);
         EintConfigTable[intNumber_u8].userFunction = funPtr; 
@@ -139,8 +142,10 @@ void attachInterrupt(uint8_t intNumber_u8, extnIntrFunPtr funPtr, uint8_t intMod
 *****************************************************************************************************/
 void detachInterrupt(uint8_t intNumber_u8)
 {
-    if(intNumber_u8<EINT_MAX)
+    intNumber_u8 = PIN_MAP[intNumber_u8];
+    if((intNumber_u8 == P2_12) || (intNumber_u8 == P2_13))
     {
+        intNumber_u8 = intNumber_u8 - P2_10;
         GPIO_PinFunction(EintConfigTable[intNumber_u8].pinumber,PINSEL_FUNC_0);
         EintConfigTable[intNumber_u8].userFunction = NULL; 
     }

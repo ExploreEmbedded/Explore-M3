@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "stdutils.h"
+#include "bit_constants.h"
 #include "gpio.h"
 #include "rgb.h"
 #include "adc.h"
@@ -18,6 +19,9 @@
 #include "exti.h"
 #include "timer.h"
 #include "uart.h"
+#include "delay.h"
+
+
 
 
 
@@ -25,7 +29,6 @@
 #include "wiring_analog.h"
 #include "wirish_time.h"
 //#include "WCharacter.h"
-
 
 
 
@@ -50,6 +53,7 @@ unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 //#include "WMath.h"
 #include "HardwareSerial.h"
 #include "Stream.h"
+#include "eeprom.h"
 
 #include "usb_serial.h"
 #include "wirish_math.h"

@@ -38,6 +38,7 @@
 #include "cdcuser.h"
 #include "rgb.h"
 #include "wirish_time.h"
+#include "systick.h"
 
 USBSerial Serial;
 
@@ -47,7 +48,7 @@ USBSerial::USBSerial(void)
   USB_Connect(TRUE);                        // USB Connect
   
   while (!USB_Configuration) ;              // wait until USB is configured 
-  delay(1000);
+  delay(2000);
 }
 
 
@@ -61,11 +62,7 @@ void USBSerial::begin(uint32_t baud)
 {
     /* ExploreEmbedded:
      * USB_Initialization done in constructor itself, so USB_Serial class is always enabled.*/
-/*
-  USB_Init();                               // USB Initialization
-  USB_Connect(TRUE);                        // USB Connect
-  
-  while (!USB_Configuration) ;              // wait until USB is configured   */
+  delay(2000); //Wait time for USB to be detected as VCOM
 }
 
 
@@ -76,8 +73,7 @@ void USBSerial::end(void) {
 }
 
 void USBSerial::Send(uint8_t ch) {
-uint32_t temp = (uint32_t)ch;
-    USB_WriteEP (CDC_DEP_IN, (unsigned char *)&temp, 1);
+    write (ch);
 }
 
 
@@ -86,7 +82,7 @@ int USBSerial::read(void) {
     
     char ch;
     int numBytesToRead = 1;
-
+  
     while (!this->available()); //Wait till the ringbufffer is empty
     CDC_RdOutBuf (&ch, &numBytesToRead);
         
@@ -121,11 +117,17 @@ int USBSerial::availableForWrite(void)
 
 extern volatile int TxDoneFlag; //Flag to indicate the USB frame is transmitted.
 size_t USBSerial::write(unsigned char ch) {
+  unsigned int usbDisconnectTimeout = millis()+2;
 
-    USB_WriteEP (CDC_DEP_IN, (unsigned char *)&ch, 1);
+  USB_WriteEP (CDC_DEP_IN, (unsigned char *)&ch, 1);
 
-  while(TxDoneFlag==0); //This falg will be set by USB EndPoint2 Tx call back function.
-      TxDoneFlag = 0;
+  while(TxDoneFlag==0)
+  { //This falg will be set by USB EndPoint2 Tx call back function. 
+      if(millis() > usbDisconnectTimeout)
+          break;       
+    }
+    
+    TxDoneFlag = 0;
 	return 1;
 }
 

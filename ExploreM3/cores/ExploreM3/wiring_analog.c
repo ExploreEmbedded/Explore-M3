@@ -45,10 +45,8 @@ void analogOutputInit(void) {
 
 }
 
-// Right now, PWM output only works on the pins with
-// hardware support.  These are defined in the appropriate
-// pins_*.c file.  For the rest of the pins, we default
-// to digital output.
+// Right now, PWM output only works on the pins with hardware support(pins 24-29:PWM1-PWM6).
+// For the rest of the pins, we default to digital output.
 void analogWrite(uint32_t ulPin, uint32_t ulValue) {
 
  if(ulPin<BOARD_MAX_GPIO_PINS)   

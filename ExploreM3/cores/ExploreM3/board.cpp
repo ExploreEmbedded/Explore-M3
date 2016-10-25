@@ -104,37 +104,5 @@ const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS] = {
 DEFINE_HWSERIAL(Serial1, 1);
 DEFINE_HWSERIAL(Serial2, 2);
 DEFINE_HWSERIAL(Serial3, 3); */
+ 
 
-
-#if 0
- usart_channel_map USART_BASE[4]=
-{  /* TxPin RxPin UART_PinFun   PCON Bit Associated UART Structure    */
-    { P0_2, P0_3, PINSEL_FUNC_1,  3     ,(LPC_UART_TypeDef *)LPC_UART0_BASE}, /* Configure P0_2,P0_3 for UART0 function */
-    { P2_0, P2_1, PINSEL_FUNC_2,  4     ,(LPC_UART_TypeDef *)LPC_UART1_BASE}, /* Configure P2_0,P2_1 for UART1 function */
-    { P0_10,P0_11,PINSEL_FUNC_1,  24    ,(LPC_UART_TypeDef *)LPC_UART2_BASE}, /* Configure P0_10,P0_11 for UART2 function */
-    { P4_28,P4_29,PINSEL_FUNC_3,  25    ,(LPC_UART_TypeDef *)LPC_UART3_BASE}  /* Configure P4_28,P4_29 for UART3 function */ 
-};
-
-
-
-
-/* 
- * Saheb
- * 
- * 04/03/2016
- *
- * Added the pin mapping for Explore M3 ADC 
- */
-const adcChannelConfig_st AdcConfig[C_MaxAdcChannels_U8]=
-{
-  { P0_23, PINSEL_FUNC_1}, /* AD0[0] is on P0.23 second alternative function */
-  { P0_24, PINSEL_FUNC_1}, /* AD0[1] is on P0.24 second alternative function */
-  { P0_25, PINSEL_FUNC_1}, /* AD0[2] is on P0.25 second alternative function */
-  { P0_26, PINSEL_FUNC_1}, /* AD0[3] is on P0.26 second alternative function */
-  { P1_30, PINSEL_FUNC_3}, /* AD0[4] is on P1.30 third alternative function */
-  { P1_31, PINSEL_FUNC_3}, /* AD0[5] is on P1.31 third alternative function */
-  { P0_3,  PINSEL_FUNC_2}, /* AD0[6] is on P0.3  third alternative function */
-  { P0_2,  PINSEL_FUNC_2}  /* AD0[7] is on P0.2  third alternative function */
-}; 
-
-#endif	

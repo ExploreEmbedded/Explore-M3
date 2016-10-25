@@ -32,12 +32,13 @@
 #define _WIRISH_USB_SERIAL_H_
 
 #include "Print.h"
+#include "Stream.h"
 
 
 /**
  * @brief Virtual serial terminal.
  */
-class USBSerial : public Print {
+class USBSerial : public Stream {
 
 public:
     USBSerial(void);
@@ -59,9 +60,6 @@ public:
     using Print::write;
 	
 	operator bool() { return true; }
-
-    /* Escape hatch into libmaple */
-    /* FIXME [0.0.13] documentation */
     struct usart_dev* c_dev(void) { return this->usart_device; }
 private:
     struct usart_dev *usart_device;

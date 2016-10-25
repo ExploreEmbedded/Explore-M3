@@ -37,7 +37,7 @@ extern "C" {
 #ifndef _DELAY_H_
 #define _DELAY_H_
 
-
+#define MicroSecDelayCount    7
 
 void delay_us(unsigned int us_count);
 void delay_ms(unsigned int ms_count);

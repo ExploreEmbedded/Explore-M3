@@ -22,6 +22,8 @@
 #include "WString.h"
 #include "itoa.h"
 #include "avr/dtostrf.h"
+#include "arduino.h"
+
 
 /*********************************************/
 /*  Constructors                             */
@@ -156,7 +158,7 @@ unsigned char String::reserve(unsigned int size)
 
 unsigned char String::changeBuffer(unsigned int maxStrLen)
 {
-	char *newbuffer = (char *)realloc(buffer, maxStrLen + 1);
+	char *newbuffer = (char *)realloc(buffer, maxStrLen+1);
 	if (newbuffer) {
 		buffer = newbuffer;
 		capacity = maxStrLen;

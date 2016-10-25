@@ -38,6 +38,12 @@ extern void (*__preinit_array_end []) (void) __attribute__((weak));
 extern void (*__init_array_start []) (void) __attribute__((weak));
 extern void (*__init_array_end []) (void) __attribute__((weak));
 
+#define HEAP_SIZE 1024
+
+__attribute__ ((section(".heap")))  
+unsigned char heap[HEAP_SIZE];
+
+
 
 int main( void )
 {
@@ -60,8 +66,13 @@ int main( void )
 
   SysTick_Init();
   SysTick_Start();
+  Serial.begin(9600);
   
-  
+  for(i=0;i<HEAP_SIZE;i++)
+  {
+      heap[i] = 0x00;
+  }
+      
 	setup();
 
 	for (;;)

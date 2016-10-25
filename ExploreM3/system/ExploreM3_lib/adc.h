@@ -56,7 +56,7 @@ extern "C" {
 /***************************************************************************************************
                              Commonly used ADC macros/Constants
 ***************************************************************************************************/
-#define M_AdcClockFreq		1000000UL		/* set to 1Mhz */
+#define M_AdcClockFreq		5000000UL		/* set to 1Mhz */
 	
 #define SBIT_BURST   16u
 #define SBIT_START	 24u
