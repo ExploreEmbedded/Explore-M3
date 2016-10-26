@@ -46,7 +46,10 @@ extern "C" {
 #define BOARD_MAX_GPIO_PINS  41
 #define C_MaxAdcChannels_U8  8u
 
+#define EXPLORE_M3_RESET_STRING "RSTM3"
+//#define EXPLORE_M3_RESET_STRING "r$T^^3"
 extern const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS];
+
 
 /************************************
              ADC pins

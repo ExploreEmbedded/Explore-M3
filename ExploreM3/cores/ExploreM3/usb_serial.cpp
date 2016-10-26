@@ -62,7 +62,7 @@ void USBSerial::begin(uint32_t baud)
 {
     /* ExploreEmbedded:
      * USB_Initialization done in constructor itself, so USB_Serial class is always enabled.*/
-  delay(2000); //Wait time for USB to be detected as VCOM
+  //Wait time for USB to be detected as VCOM
 }
 
 

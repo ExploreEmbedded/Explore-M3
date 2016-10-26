@@ -28,6 +28,7 @@
 #include "gpio.h"
 #include "delay.h"
 #include "iap_drv.h"
+#include "board.h"
 
 
 
@@ -284,25 +285,26 @@ TxDoneFlag = 1;
   Parameters:   none
   Return Value: none
  *---------------------------------------------------------------------------*/
- unsigned char resetString[6]={"RSTM3"},rstIndex=0;
- unsigned char inPutBuffer[100];
+
+ //unsigned char resetString[]={"r$T^^3"};
+ unsigned char resetString[] = EXPLORE_M3_RESET_STRING;
+ unsigned char resetStringSize = strlen(EXPLORE_M3_RESET_STRING);
+ unsigned char rstIndex=0;
  extern flash_eeprom_st eepMem;
+ 
 void CDC_BulkOut(void) {
   int numBytesRead,j,k;
 
   // get data from USB into intermediate buffer
-  numBytesRead = USB_ReadEP(CDC_DEP_OUT, &BulkBufOut[0]);
-  for(j=0;j<numBytesRead;j++)
-  {
-      inPutBuffer[j] = BulkBufOut[j];
-  }
+  numBytesRead = USB_ReadEP(CDC_DEP_OUT, &BulkBufOut[0]); //limit the buffer index to 63
+
   
-  for(k=0;k<j;k++)
+  for(k=0;k<numBytesRead;k++)
   {
-     if(resetString[rstIndex]==inPutBuffer[k])
+     if(resetString[rstIndex]==BulkBufOut[k])
      {
          rstIndex++;
-         if(rstIndex>=5)
+         if(rstIndex>=resetStringSize)
          {
 
              GPIO_PinFunction(P2_9,0);

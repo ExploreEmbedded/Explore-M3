@@ -33,6 +33,7 @@
 
 #include "Print.h"
 #include "Stream.h"
+#include "wirish_time.h"
 
 
 /**
@@ -59,7 +60,10 @@ public:
     inline size_t write(int n) { return write((uint8_t)n); }
     using Print::write;
 	
-	operator bool() { return true; }
+	operator bool() 
+                 {  delay(2000);  
+                    return true; 
+                  }
     struct usart_dev* c_dev(void) { return this->usart_device; }
 private:
     struct usart_dev *usart_device;
