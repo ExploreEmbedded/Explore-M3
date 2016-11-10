@@ -1,5 +1,5 @@
 #include "eeprom.h"
-#include "arduino.h"
+#include "Arduino.h"
 #include "iap_drv.h"
 
 
