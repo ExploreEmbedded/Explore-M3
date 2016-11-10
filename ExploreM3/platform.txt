@@ -90,13 +90,13 @@ recipe.size.regex=\.text\s+([0-9]+).*
 # Upload using USB bootloader over DFU
 tools.exploreM3_upload.cmd=exploreM3_upload 
 tools.exploreM3_upload.cmd.windows=exploreM3_upload.bat
-tools.exploreM3_upload.cmd.linux=dfu                
+tools.exploreM3_upload.cmd.linux=exploreM3_upload                
 tools.exploreM3_upload.path={runtime.hardware.path}/tools/win
 tools.exploreM3_upload.path.macosx={runtime.hardware.path}/tools/macosx
 tools.exploreM3_upload.path.linux={runtime.hardware.path}/tools/linux    
 
 tools.exploreM3_upload.upload.params.verbose=-D
 tools.exploreM3_upload.upload.params.quiet=-q -q
-tools.exploreM3_upload.upload.pattern="{path}/{cmd}" {serial.port.file} "{build.path}/{build.project_name}.bin"
+tools.exploreM3_upload.upload.pattern="{path}/{cmd}" {serial.port.file}  1209 ee02  "{build.path}/{build.project_name}.bin"
 
 
