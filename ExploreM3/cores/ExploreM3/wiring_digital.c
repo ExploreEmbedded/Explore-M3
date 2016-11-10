@@ -24,7 +24,7 @@
 
 extern void pinMode( uint32_t ulPin, uint32_t ulMode )
 {
-   
+   GPIO_PinFunction(PIN_MAP[ulPin],0); //configure pin as GPIO
    GPIO_PinDirection(PIN_MAP[ulPin],ulMode);
 }
 

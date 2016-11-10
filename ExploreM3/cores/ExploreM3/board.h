@@ -43,11 +43,11 @@ extern "C" {
 #include "stdutils.h"
 #include "gpio.h"
 
-#define BOARD_MAX_GPIO_PINS  41
+#define BOARD_MAX_GPIO_PINS  42
 #define C_MaxAdcChannels_U8  8u
 
-#define EXPLORE_M3_RESET_STRING "RSTM3"
-//#define EXPLORE_M3_RESET_STRING "r$T^^3"
+
+#define EXPLORE_M3_RESET_STRING "r$T^^3"
 extern const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS];
 
 
@@ -113,6 +113,7 @@ static unsigned const int A4 = 33;
 /**********End of SPI pins***********/
 
 
+#define USB_BOOT_SWITCH 41
 
 #endif
 

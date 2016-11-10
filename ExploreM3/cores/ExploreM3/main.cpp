@@ -68,11 +68,7 @@ int main( void )
   SysTick_Start();
   Serial.begin(9600);
   
-  for(i=0;i<HEAP_SIZE;i++)
-  {
-      heap[i] = 0x00;
-  }
-      
+     
 	setup();
 
 	for (;;)

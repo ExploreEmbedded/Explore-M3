@@ -47,8 +47,6 @@ USBSerial::USBSerial(void)
   USB_Init();                               // USB Initialization
   USB_Connect(TRUE);                        // USB Connect
   
-  while (!USB_Configuration) ;              // wait until USB is configured 
-  delay(2000);
 }
 
 
@@ -57,12 +55,27 @@ USBSerial::USBSerial(void)
  * Set up/tear down
  */
 
-
+int connectionTimeOut=0;
 void USBSerial::begin(uint32_t baud) 
 {
     /* ExploreEmbedded:
      * USB_Initialization done in constructor itself, so USB_Serial class is always enabled.*/
-  //Wait time for USB to be detected as VCOM
+     //Wait time for USB to be detected as VCOM or gets timedout(after 1sec) if USB is not connected
+     // Calling Serial.bein() more than once will increase the wait time so extracheck is added to handle it. 
+
+    
+   if(connectionTimeOut == 0)
+   {
+    connectionTimeOut=millis()+1000;
+       
+    while (!USB_Configuration) 
+    {
+        if(millis()>=connectionTimeOut)
+            break;
+    }
+    if(millis()<connectionTimeOut)
+     delay(2000);
+   }
 }
 
 

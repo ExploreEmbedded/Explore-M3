@@ -82,28 +82,13 @@ const uint8_t PIN_MAP[BOARD_MAX_GPIO_PINS] = {
     P0_25,    /* 35 *//* A2 */
     P0_24,    /* 36 *//* A1 */
     P0_23,    /* 37 *//* A0 */
-    P1_0 ,    /* RGB_RED */
-    P1_1 ,    /* RGB_GREEN */
-    P1_4      /* RGB_BLUE */            
+    P1_0 ,    /* 38 RGB_RED */
+    P1_1 ,    /* 39 RGB_GREEN */
+    P1_4 ,    /* 40 RGB_BLUE */
+    P2_11     /* 41 USB_BOOT_SWITCH */
 };
 
 
-
-
-/* 
- * Saheb
- * 
- * 04/03/2016
- *
- * Added the definitions for Hardware Serial devices so that each board can define which Arduino "Serial" instance
- * Maps to which hardware serial port on the microprocessor
- *
- * Note. Serial Class is mapped to VCOM(USB) on Explore M3(LPC1768). It also has 4hardware Serial ports mapped to Serial0-Serial3.  
- */							
-/* DEFINE_HWSERIAL(Serial0, 0); 
-DEFINE_HWSERIAL(Serial1, 1);
-DEFINE_HWSERIAL(Serial2, 2);
-DEFINE_HWSERIAL(Serial3, 3); */
 
 
  
