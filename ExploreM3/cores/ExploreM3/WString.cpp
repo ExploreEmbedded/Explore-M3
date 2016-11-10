@@ -22,7 +22,7 @@
 #include "WString.h"
 #include "itoa.h"
 #include "avr/dtostrf.h"
-#include "arduino.h"
+#include "Arduino.h"
 
 
 /*********************************************/
