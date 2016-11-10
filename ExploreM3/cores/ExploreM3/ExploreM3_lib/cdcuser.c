@@ -24,7 +24,7 @@
 #include "usbcore.h"
 #include "cdc.h"
 #include "cdcuser.h"
-#include "LPC17xx.h"
+#include "lpc17xx.h"
 #include "gpio.h"
 #include "delay.h"
 #include "iap_drv.h"
