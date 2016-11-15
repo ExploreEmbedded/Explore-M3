@@ -6,7 +6,7 @@
             "maintainer":"ExploreEmbedded",
             "websiteURL":"https://www.exploreembedded.com/",
             "email":"support@exploreembedded.com",
-            "help":{ "online":"https://www.exploreembedded.com/wiki/index.php?title=Arduino%20Setup%20for%20Explore%20M3" },
+            "help":{ "online":"https://github.com/ExploreEmbedded/Explore-M3/raw/master/Explore-M3.zip" },
             "platforms": 
             [
                 {
