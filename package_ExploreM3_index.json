@@ -10,7 +10,7 @@
             "platforms": 
             [
                 {
-                    "name": "ExploreEmbedded (32-bits ARM Cortex-M3)",
+                    "name": "Explore-M3(32-bits ARM Cortex-M3)",
                     "architecture": "Explore-M3",
                     "version": "1.0.0",
                     "category": "ExploreM3",
