@@ -6,7 +6,7 @@
             "maintainer":"ExploreEmbedded",
             "websiteURL":"https://www.exploreembedded.com/",
             "email":"support@exploreembedded.com",
-            "help":{ "online":"https://github.com/ExploreEmbedded/Explore-M3/raw/master/Explore-M3.zip" },
+            "help":{ "online":"https://www.exploreembedded.com/wiki/index.php?title=Arduino%20Setup%20for%20Explore%20M3" },
             "platforms": 
             [
                 {
@@ -14,7 +14,7 @@
                     "architecture": "Explore-M3",
                     "version": "1.0.0",
                     "category": "ExploreM3",
-                    "url": "https://raw.githubusercontent.com/ExploreEmbedded/M3Test/master/Explore-M3.zip",
+                    "url": "https://github.com/ExploreEmbedded/Explore-M3/raw/master/Explore-M3.zip",
                     "archiveFileName": "Explore-M3.zip",
                     "checksum": "SHA-256:de59ceadac38f1e94ef0a967ff285783094e5584249086f93c9ce807a87ef299",
                     "size": "19649972",
