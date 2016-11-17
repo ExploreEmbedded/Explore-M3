@@ -5,6 +5,9 @@ if sudo [ -w /etc/udev/rules.d ]; then
     sudo cp -v 90-explore-m3.rules /etc/udev/rules.d/90-explore-m3.rules
     sudo chown root:root /etc/udev/rules.d/90-explore-m3.rules
     sudo chmod 644 /etc/udev/rules.d/90-explore-m3.rules
+    sudo chmod 777 exploreM3_upload
+    sudo chmod 777 upload_reset
+    sudo chmod 777 dfu	
     echo "Reloading udev rules"
     sudo udevadm control --reload-rules
     echo "Adding current user to dialout group"
