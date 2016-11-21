@@ -48,6 +48,30 @@ extern "C" {
 *************************************************************************************************/
 #define RGB_OFF      1
 #define RGB_ON       0
+
+
+/*******************************************
+ RED    GREEN    BLUE        FINAL_COLOR
+********************************************
+  0      0        0            NONE
+  0      0        1            BLUE
+  0      1        0            GREEN
+  0      1        1
+  1      0        0            RED
+  1      0        1            
+  1      1        0
+  1      1        1            WHITE
+*********************************************/  
+
+#define COLOR_NONE      0
+#define COLOR_BLUE      1
+#define COLOR_GREEN     2
+#define COLOR_CYAN      3
+#define COLOR_RED       4  
+#define COLOR_YELLOW    5
+#define COLOR_MAGNETO   6
+#define COLOR_WHITE     7
+ 
 /*************************************************************************************************/
 
 
@@ -57,7 +81,7 @@ extern "C" {
                              Function prototypes
 ***************************************************************************************************/
 void rgbInit(void);
-void rgbWrite(uint8_t ledNum, uint8_t ledValue);
+void rgbWrite(uint8_t color);
 void rgbWriteAll(uint8_t redValue, uint8_t greenValue, uint8_t blueValue);
 /**************************************************************************************************/
 

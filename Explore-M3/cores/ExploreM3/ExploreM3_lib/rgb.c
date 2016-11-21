@@ -73,12 +73,19 @@ void rgbInit(void)
 
  * description :This function turns on or off the RGB leds  
  ***************************************************************************************************/
-void rgbWrite(uint8_t ledNum, uint8_t ledValue)
+void rgbWrite(uint8_t color)
 {
-    if((ledNum>=RGB_RED) && (ledNum<=RGB_BLUE))
+    switch(color)
     {
-        GPIO_PinWrite(PIN_MAP[ledNum],ledValue); 
-    }    
+        case COLOR_NONE   :   rgbWriteAll(RGB_OFF, RGB_OFF, RGB_OFF); break;
+        case COLOR_GREEN  :   rgbWriteAll(RGB_OFF, RGB_OFF, RGB_ON ); break;
+        case COLOR_BLUE   :   rgbWriteAll(RGB_OFF, RGB_ON , RGB_OFF); break;
+        case COLOR_CYAN   :   rgbWriteAll(RGB_OFF, RGB_ON , RGB_ON ); break;
+        case COLOR_RED    :   rgbWriteAll(RGB_ON , RGB_OFF, RGB_OFF); break;  
+        case COLOR_YELLOW :   rgbWriteAll(RGB_ON , RGB_OFF, RGB_ON ); break;
+        case COLOR_MAGNETO:   rgbWriteAll(RGB_ON , RGB_ON , RGB_OFF); break;
+        case COLOR_WHITE  :   rgbWriteAll(RGB_ON , RGB_ON , RGB_ON ); break;   
+    }
 }
 
 
