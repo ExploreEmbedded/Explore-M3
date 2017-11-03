@@ -42,7 +42,7 @@ unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout)
       while(digitalRead(pin)==state)  // Wait till the state change and keep track of timeout
       {
           currentTime = micros();
-          if(timeout >= (currentTime-startTime))
+          if((currentTime-startTime)>=timeout)
           {
             currentTime = startTime; //Make Current time and startTIme as same so as to return the diff zero in case pf timeout
             break;            
@@ -71,7 +71,7 @@ unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout)
       while(digitalRead(pin)==state)  // Wait till the state change and keep track of timeout
       {
           currentTime = micros();
-          if(timeout >= (currentTime-startTime))
+          if((currentTime-startTime)>=timeout)
           {
             currentTime = startTime; //Make Current time and startTIme as same so as to return the diff zero in case pf timeout
             break;            

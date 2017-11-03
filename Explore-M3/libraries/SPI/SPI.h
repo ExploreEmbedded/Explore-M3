@@ -1,11 +1,11 @@
 /***************************************************************************************************
                                     ExploreEmbedded Copyright Notice
- ****************************************************************************************************
- * File:   SPI.c
- * Version: 15.0
- * Author: ExploreEmbedded
- * Website: http://www.exploreembedded.com/wiki
- * Description: Contains the library function for SPI read/write
+****************************************************************************************************
+* File:   SPI.c
+* Version: 15.0
+* Author: ExploreEmbedded
+* Website: http://www.exploreembedded.com/wiki
+* Description: Contains the library function for SPI read/write
 
 This code has been developed and tested on ExploreEmbedded boards.
 We strongly believe that the library works on any of development boards for respective controllers.
@@ -23,12 +23,14 @@ RELATED TO UPDATES.
 Permission to use, copy, modify, and distribute this software and its documentation for any purpose
 and without fee is hereby granted, provided that this copyright notices appear in all copies
 and that both those copyright notices and this permission notice appear in supporting documentation.
- ***************************************************************************************************/
+***************************************************************************************************/
 
 #ifndef _SPI_H_INCLUDED_
 #define _SPI_H_INCLUDED_
 
 #include <Arduino.h>
+#include "spiIntr.h"
+#include "lpc17xx.h"
 
 
 // SPI_HAS_TRANSACTION means SPI has beginTransaction(), endTransaction(),
@@ -71,16 +73,17 @@ and that both those copyright notices and this permission notice appear in suppo
 #define SPI_MODE2 0x08
 #define SPI_MODE3 0x0C
 
-#define SPI_MODE_MASK 0x0C  // CPOL = bit 3, CPHA = bit 2 on SPCR
-#define SPI_CLOCK_MASK 0x03  // SPR1 = bit 1, SPR0 = bit 0 on SPCR
-#define SPI_2XCLOCK_MASK 0x01  // SPI2X = bit 0 on SPSR
+#define SPI0_MODE_MASK   0x0C   // CPOL = bit 4, CPHA = bit 3 on SPCR
+#define SSSP1_MODE_MASK  0xC0   // CPOL = bit 6, CPHA = bit 7 on SPCR
+#define SPI_CLOCK_MASK   0x03   // SPR1 = bit 1, SPR0 = bit 0 on SPCR
+#define SPI_2XCLOCK_MASK 0x01   // SPI2X = bit 0 on SPSR
 
 
 
 
 /****************************************************************************************************
                             SPI pin numbers and pin functions
- ****************************************************************************************************/
+****************************************************************************************************/
 
 
 #define SCK_Freq    4000000          // SPI clock frequency
@@ -93,7 +96,7 @@ and that both those copyright notices and this permission notice appear in suppo
 
 /****************************************************************************************************
                             SPI SFR bits
- ****************************************************************************************************/
+****************************************************************************************************/
 #define SPI0_CPHA    3
 #define SPI0_CPOL    4
 #define SPI0_MSTR    5
@@ -105,11 +108,10 @@ and that both those copyright notices and this permission notice appear in suppo
 #define SPI1_CPOL    6
 #define SPI1_CPHA    7
 #define SPI1_SSE     1
+#define SPI1_MS      2
+#define SPI1_RNE     2
 #define SPI1_BSY     4
 /***************************************************************************************************/
-
-
-
 
 
 class SPISettings {
@@ -146,13 +148,16 @@ private:
 };
 
 
-class SPIClass {
+class SPIClass {    
+private:
+    spi_dev *dev;
+    
 public:
 
-     SPIClass(uint32_t spiPortNumber);
+    SPIClass(uint32_t spiPortNumber);
     // Initialize the SPI library
     void begin();
-
+    void beginSlave();
     // If SPI is used from within an interrupt, this function registers
     // that interrupt with the SPI library, so beginTransaction() can
     // prevent conflicts.  The input interruptNumber is the number used
@@ -171,6 +176,7 @@ public:
     // this function is used to gain exclusive access to the SPI bus
     // and configure the correct settings.
     void beginTransaction(SPISettings settings);
+    void beginTransactionSlave(SPISettings settings);
 
     void endTransaction(void);
 
@@ -182,8 +188,12 @@ public:
     void transfer(void *buf, size_t count);
     uint16_t transfer16(uint16_t data);
 
+    uint16_t slaveRead(char *buf, uint8_t length);
+    uint8_t* slaveRead();
+    uint16_t available(void);
+    
     // SPI Configuration methods
-    void attachInterrupt(void);
+    void attachInterrupt(voidFuncPtr handler);
     void detachInterrupt(void);
     void end();
 
@@ -192,6 +202,7 @@ private:
     uint32_t spiClock;
     uint8_t spiBitOrder;
     uint8_t spiDataMode;
+    uint8_t spiMasterMode;
 
     static uint8_t initialized;
     static uint8_t interruptMode; // 0=none, 1=mask, 2=global
