@@ -16,8 +16,8 @@
                     "category": "ExploreM3",
                     "url": "https://github.com/ExploreEmbedded/Explore-M3/raw/master/Explore-M3.zip",
                     "archiveFileName": "Explore-M3.zip",
-                    "checksum": "SHA-256:ea91903c6e00aebb57d8eace9a5e991e0c5709925687549a5afc85f753d31c76",
-                    "size": "9817932",
+                    "checksum": "SHA-256:6b6834f46ff33c8fdd1ed19f2b7464385b35819f6b361e5c564edfa4ef6bbf71",
+                    "size": "9807159",
                     "boards":
                     [
                         {"name": "Explore M3"}
