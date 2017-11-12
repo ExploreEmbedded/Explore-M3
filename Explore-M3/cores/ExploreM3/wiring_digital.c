@@ -41,7 +41,7 @@ extern int digitalRead( uint32_t ulPin )
  
      value = GPIO_PinRead(PIN_MAP[ulPin]);
  
-	return value;
+    return value;
 }
 
 
@@ -52,7 +52,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
        for (int bit = 0; bit < 8; bit++) 
         {  
           GPIO_PinWrite(PIN_MAP[dataPin], (value >> bit) & 0x1);
-		  GPIO_PinWrite(PIN_MAP[clockPin], HIGH); 
+          GPIO_PinWrite(PIN_MAP[clockPin], HIGH); 
           GPIO_PinWrite(PIN_MAP[clockPin], LOW);
         }
     }
@@ -61,7 +61,7 @@ void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value
         for (int bit = 7; bit >= 0; bit--) 
         {  
           GPIO_PinWrite(PIN_MAP[dataPin], (value >> bit) & 0x1);
-		  GPIO_PinWrite(PIN_MAP[clockPin], HIGH); 
+          GPIO_PinWrite(PIN_MAP[clockPin], HIGH); 
           GPIO_PinWrite(PIN_MAP[clockPin], LOW);
         }  
     }
@@ -73,15 +73,38 @@ Various libraries use direct port accesss for faster gpio operation, these can b
 *********************************************************************************************************************/
 //returns pointer to the port
 
-inline volatile uint32_t * digitalPinToPort(int Pin)
+inline volatile uint32_t* digitalPinToPort(int Pin)
 {
     uint8_t var_portNumber_u8;
     LPC_GPIO_TypeDef *LPC_GPIO_PORT;
-    var_portNumber_u8 =  (PIN_MAP[Pin]>>5);
+        var_portNumber_u8 =  (PIN_MAP[Pin]>>5);
     LPC_GPIO_PORT =  (LPC_GPIO_TypeDef*)(LPC_GPIO_BASE + ((var_portNumber_u8) << 5));
-    return &LPC_GPIO_PORT->FIOPIN;
+    return LPC_GPIO_PORT;
 }
 
+inline volatile uint32_t* portOutputRegister(volatile uint32_t *Port)
+{
+//    LPC_GPIO_TypeDef *LPC_GPIO_PORT = (LPC_GPIO_TypeDef*)Port;
+    return &(((LPC_GPIO_TypeDef*)Port)->FIOPIN);
+}
+
+inline volatile uint32_t* portInputRegister(volatile uint32_t *Port)
+{
+//    LPC_GPIO_TypeDef *LPC_GPIO_PORT = (LPC_GPIO_TypeDef*)Port;
+    return &(((LPC_GPIO_TypeDef*)Port)->FIOPIN);
+}
+
+inline volatile uint32_t * portSetRegister(volatile uint32_t *Port)
+{
+//    LPC_GPIO_TypeDef *LPC_GPIO_PORT = (LPC_GPIO_TypeDef*)Port;
+    return &(((LPC_GPIO_TypeDef*)Port)->FIOSET);
+}
+
+inline volatile uint32_t * portClearRegister(volatile uint32_t *Port)
+{
+//    LPC_GPIO_TypeDef *LPC_GPIO_PORT = (LPC_GPIO_TypeDef*)Port;
+    return &(((LPC_GPIO_TypeDef*)Port)->FIOCLR);
+}
 //returns pin Mask 
 inline uint32_t digitalPinToBitMask(int Pin)
 {

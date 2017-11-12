@@ -84,6 +84,10 @@ typedef signed  int    sint32_t;
 typedef uint8_t boolean;
 typedef uint8_t byte;
 
+#ifndef RwReg
+typedef volatile uint32_t RwReg;
+#endif
+
 #define C_SINT8_MAX   0x7F
 #define C_SINT8_MIN  -128
 
@@ -265,7 +269,7 @@ typedef enum
 /**************************************************************************************************/
 
 
-
+void yield(void) __attribute__ ((weak));
 
 
 /***************************************************************************************************

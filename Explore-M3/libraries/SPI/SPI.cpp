@@ -358,6 +358,8 @@ uint32_t spi_GetPclk(void)
         0x03       SystemFreq/8
     **/
 
+    LPC_SC->PCLKSEL0 = (LPC_SC->PCLKSEL0 & (~0x00030000)) | 0x00010000;
+
     v_spiPclk_u32 = (LPC_SC->PCLKSEL0 >> 16) & 0x03;
 
     switch( v_spiPclk_u32 )

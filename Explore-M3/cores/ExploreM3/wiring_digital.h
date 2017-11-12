@@ -65,10 +65,16 @@ extern int digitalRead( uint32_t ulPin ) ;
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t value);
 
 //for direct port access
-inline volatile uint32_t * digitalPinToPort(int Pin);
 inline uint32_t digitalPinToBitMask(int Pin);
-#define portOutputRegister(x) x 
+inline volatile uint32_t * digitalPinToPort(int Pin);
+inline volatile uint32_t * portOutputRegister(volatile uint32_t *Port);
+inline volatile uint32_t * portInputRegister(volatile uint32_t *Port);
+inline volatile uint32_t * portSetRegister(volatile uint32_t *Port);
+inline volatile uint32_t * portClearRegister(volatile uint32_t *Port);
 
+/*
+#define portConfigRegister(pin)         ( &(PIN_MAP[pin].gpio_device->regs->CRL) )
+*/
 #ifdef __cplusplus
 }
 #endif
