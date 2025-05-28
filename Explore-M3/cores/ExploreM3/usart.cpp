@@ -257,7 +257,7 @@ void usart0_IRQHandler(void)
       
       if(temp_head != USART0->rx_buf_tail )
       {
-          USART0->rx_buf[USART0->rx_buf_tail] = uart_data;
+          USART0->rx_buf[USART0->rx_buf_head] = uart_data;
           USART0->rx_buf_head = temp_head;
       }
       }     
@@ -286,7 +286,7 @@ void usart1_IRQHandler(void)
       
       if(temp_head != USART1->rx_buf_tail )
       {
-          USART1->rx_buf[USART1->rx_buf_tail] = uart_data;
+          USART1->rx_buf[USART1->rx_buf_head] = uart_data;
           USART1->rx_buf_head = temp_head;
       }
       }     
@@ -313,7 +313,7 @@ void usart2_IRQHandler(void)
       
       if(temp_head != USART2->rx_buf_tail )
       {
-          USART2->rx_buf[USART2->rx_buf_tail] = uart_data;
+          USART2->rx_buf[USART2->rx_buf_head] = uart_data;
           USART2->rx_buf_head = temp_head;
       }
       }     
@@ -340,7 +340,7 @@ void usart3_IRQHandler(void)
       
       if(temp_head != USART3->rx_buf_tail )
       {
-          USART3->rx_buf[USART3->rx_buf_tail] = uart_data;
+          USART3->rx_buf[USART3->rx_buf_head] = uart_data;
           USART3->rx_buf_head = temp_head;
       }
       }     
